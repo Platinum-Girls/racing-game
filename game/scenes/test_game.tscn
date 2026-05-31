@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bkfdb0ngverj8"]
+
+[ext_resource type="PackedScene" uid="uid://cbvqyygbmd6q4" path="res://game/features/car/car.tscn" id="1_gieot"]
+[ext_resource type="Script" uid="uid://dqk8d5tvee45m" path="res://game/gameplay/input/player_input_provider.gd" id="2_4ff6f"]
+[ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/features/car/basic_camera.gd" id="2_ashi6"]
+[ext_resource type="PackedScene" uid="uid://c3ypbiea7csq0" path="res://test_map.scn" id="3_ashi6"]
+[ext_resource type="Script" uid="uid://cxclge616jqli" path="res://game/scenes/label.gd" id="5_eys72"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_26caj"]
+mie_eccentricity = 0.87
+sun_disk_scale = 0.0
+ground_color = Color(0.75816345, 0.6293738, 0.48543787, 1)
+energy_multiplier = 5.0
+
+[sub_resource type="Sky" id="Sky_ashi6"]
+sky_material = SubResource("PhysicalSkyMaterial_26caj")
+process_mode = 1
+
+[sub_resource type="Environment" id="Environment_4ff6f"]
+background_mode = 2
+sky = SubResource("Sky_ashi6")
+ambient_light_source = 2
+ambient_light_color = Color(0.7, 0.6738667, 0.644, 1)
+ssao_enabled = true
+
+[node name="Node3D" type="Node3D" unique_id=1097721005]
+
+[node name="Car" parent="." unique_id=25812172 node_paths=PackedStringArray("input_provider") instance=ExtResource("1_gieot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4260235, 4.228983, -30.522133)
+input_provider = NodePath("PlayerInputProvider")
+steering_limit = 12
+engine_power = 15
+braking = -14.0
+max_speed_reverse = 8
+
+[node name="PlayerInputProvider" type="Node" parent="Car" unique_id=281551392]
+script = ExtResource("2_4ff6f")
+metadata/_custom_type_script = "uid://dqk8d5tvee45m"
+
+[node name="Node3D" type="Node3D" parent="." unique_id=419274260 node_paths=PackedStringArray("target")]
+script = ExtResource("2_ashi6")
+target = NodePath("../Car")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Node3D" unique_id=1915209332]
+transform = Transform3D(-1, 4.3942425e-08, 7.557649e-08, 0, -0.86449426, 0.50264275, 8.742278e-08, 0.50264275, 0.86449426, 0, 0, 0)
+collision_mask = 16
+spring_length = 5.0
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D" unique_id=598044707]
+transform = Transform3D(-1, -8.742277e-08, 0, 7.986468e-08, -0.91354537, 0.4067366, -3.5558045e-08, 0.4067366, 0.91354537, 0, 0, 0)
+current = true
+fov = 80.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1054599678]
+environment = SubResource("Environment_4ff6f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=222382763]
+transform = Transform3D(0.83103293, 0.15502281, 0.53418356, -0.5542002, 0.3126037, 0.77145386, -0.047394812, -0.9371483, 0.34569773, 5.481962, 9.300289, 0)
+shadow_enabled = true
+
+[node name="test_map" parent="." unique_id=240328858 instance=ExtResource("3_ashi6")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="Label" type="Label" parent="." unique_id=599254887]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("5_eys72")

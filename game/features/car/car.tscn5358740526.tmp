@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://cbvqyygbmd6q4"]
+
+[ext_resource type="Script" uid="uid://obie0h625836" path="res://game/features/car/car.script.gd" id="1_8khw0"]
+[ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/features/car/basic_camera.gd" id="2_f6mjb"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1cd3k"]
+bounce = 0.1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_udkdv"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_1cd3k"]
+size = Vector3(1, 0.9, 1.5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8khw0"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.3
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f6mjb"]
+albedo_color = Color(0.08468992, 0.08468992, 0.08468992, 1)
+
+[node name="Car" type="Node3D" unique_id=582448854]
+script = ExtResource("1_8khw0")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=1987697205]
+physics_material_override = SubResource("PhysicsMaterial_1cd3k")
+gravity_scale = 5.0
+angular_damp = 10.0
+
+[node name="SphereCollisionShape" type="CollisionShape3D" parent="RigidBody3D" unique_id=683030304]
+shape = SubResource("SphereShape3D_udkdv")
+
+[node name="Mesh" type="CSGMesh3D" parent="." unique_id=517589522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21632218, 0)
+mesh = SubResource("PrismMesh_1cd3k")
+
+[node name="frontRightWheel" type="CSGMesh3D" parent="Mesh" unique_id=620687547]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0.5, -0.4, -0.648)
+mesh = SubResource("CylinderMesh_8khw0")
+material = SubResource("StandardMaterial3D_f6mjb")
+
+[node name="frontLeftWheel" type="CSGMesh3D" parent="Mesh" unique_id=1839710914]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -0.5, -0.4, -0.648)
+mesh = SubResource("CylinderMesh_8khw0")
+material = SubResource("StandardMaterial3D_f6mjb")
+
+[node name="rearRightWheel" type="CSGMesh3D" parent="Mesh" unique_id=317307390]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0.5, -0.4, 0.648)
+mesh = SubResource("CylinderMesh_8khw0")
+material = SubResource("StandardMaterial3D_f6mjb")
+
+[node name="rearLeftWheel" type="CSGMesh3D" parent="Mesh" unique_id=1440572773]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -0.5, -0.4, 0.648)
+mesh = SubResource("CylinderMesh_8khw0")
+material = SubResource("StandardMaterial3D_f6mjb")
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=696424839]
+collision_mask = 17
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=395452372]
+collision_mask = 16
+spring_length = 10.0
+script = ExtResource("2_f6mjb")
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=853053234]
+current = true
