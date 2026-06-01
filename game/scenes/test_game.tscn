@@ -43,7 +43,7 @@ script = ExtResource("2_ashi6")
 target = NodePath("../Car")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Node3D" unique_id=1915209332]
-transform = Transform3D(-1, 4.3942425e-08, 7.557649e-08, 0, -0.86449426, 0.50264275, 8.742278e-08, 0.50264275, 0.86449426, 0, 0, 0)
+transform = Transform3D(-1, 4.3942425e-08, 7.557649e-08, 0, -0.86449426, 0.50264275, 8.742278e-08, 0.50264275, 0.86449426, 0, 0.1, 0)
 collision_mask = 16
 spring_length = 5.0
 
