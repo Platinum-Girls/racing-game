@@ -29,10 +29,10 @@ physics_interpolation_mode = 1
 [node name="Car" parent="." unique_id=25812172 node_paths=PackedStringArray("input_provider") instance=ExtResource("1_gieot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -122.42819, 4.2289824, 140.70082)
 input_provider = NodePath("PlayerInputProvider")
-steering_limit = 12
-engine_power = 15
+steering_limit = 12.0
+engine_power = 15.0
 braking = -14.0
-max_speed_reverse = 8
+max_speed_reverse = 8.0
 
 [node name="PlayerInputProvider" type="Node" parent="Car" unique_id=281551392]
 script = ExtResource("2_4ff6f")
@@ -60,9 +60,10 @@ environment = SubResource("Environment_4ff6f")
 transform = Transform3D(0.83103293, 0.15502281, 0.53418356, -0.5542002, 0.3126037, 0.77145386, -0.047394812, -0.9371483, 0.34569773, 5.481962, 9.300289, 0)
 shadow_enabled = true
 
-[node name="Label" type="Label" parent="." unique_id=599254887]
+[node name="Label" type="Label" parent="." unique_id=599254887 node_paths=PackedStringArray("car")]
 offset_right = 40.0
 offset_bottom = 23.0
 script = ExtResource("5_eys72")
+car = NodePath("../Car")
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
