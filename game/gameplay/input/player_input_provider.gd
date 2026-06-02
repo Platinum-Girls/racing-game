@@ -15,6 +15,9 @@ func get_acceleration_axis() -> float:
 
 func get_steering_axis() -> float:
 	return Input.get_axis(&"steer_right", &"steer_left")
+	
+func is_jumping() -> bool:
+	return Input.is_action_just_pressed("jump")
 
 
 func _input(event: InputEvent) -> void:
