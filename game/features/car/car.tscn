@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://obie0h625836" path="res://game/features/car/car.script.gd" id="1_8khw0"]
 [ext_resource type="PackedScene" uid="uid://c24c0odmarfok" path="res://game/kenney_cars/race.glb" id="2_f6mjb"]
 
+[sub_resource type="Curve" id="Curve_f6mjb"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_f6mjb"]
 size = Vector3(1, 0.6, 2.5)
 
@@ -19,6 +23,10 @@ floor_cast = NodePath("FloorCast")
 front_ray = NodePath("FrontRay")
 rear_ray = NodePath("RearRay")
 wheel_base = 1.5
+steering_limit = 8
+steering_curve = SubResource("Curve_f6mjb")
+steering_min_speed = 10
+steering_speed = 6
 
 [node name="FloorCast" type="ShapeCast3D" parent="." unique_id=1988943407]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
@@ -39,7 +47,7 @@ target_position = Vector3(-1.5, 0, 0)
 collision_mask = 16
 
 [node name="Mesh" parent="." unique_id=743088303 instance=ExtResource("2_f6mjb")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 0, -0.2433005)
 
 [node name="CollisionBody" type="CollisionShape3D" parent="." unique_id=1349575834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -2.9802322e-08)

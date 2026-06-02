@@ -8,17 +8,22 @@ class_name CarBase extends CharacterBody3D
 @export var rear_ray: ShapeCast3D
 
 @export_group("Car Properties")
-@export_custom(0, "suffix:m/s") var gravity: float = -20
-@export_custom(0, "suffix:m") var wheel_base: float = 0.6
-@export_custom(0, "suffix:deg") var steering_limit: float = 10
-@export_custom(0, "suffix:deg/s") var steering_speed: float = 8
-@export_custom(0, "suffix:m/s") var engine_power: float = 6
+@export_custom(0, "suffix:m/s") var gravity = -20
+@export var wheel_base = 0.6
+@export var steering_limit = 10
+@export var steering_curve: Curve
+@export var steering_min_speed = 8
+@export var steering_speed = 8
+@export_custom(0, "suffix:m/s") var engine_power = 6
 @export_custom(0, "suffix:m/s") var braking: float = -9
 @export_custom(0, "suffix:m/s") var friction: float = -2
 @export_custom(0, "suffix:m/s²") var drag: float = -2
 @export_custom(0, "suffix:m/s") var max_speed_reverse: float = 3
 
-const STICK_TO_LOOP_THRESHOLD: float = 16
+@onready var mesh: Node3D = $Mesh
+
+
+const STICK_TO_LOOP_THRESHOLD = 16
 
 # Car state properties
 var acceleration := Vector3.ZERO
@@ -54,12 +59,20 @@ func get_gravity_vector() -> Vector3:
 
 
 func apply_input(delta: float) -> void:
-	var steer := input_provider.get_steering_axis()
+	
+	var vel_bias := 1.0
+	if velocity.length() < steering_min_speed:
+		vel_bias = steering_curve.sample(inverse_lerp(0, steering_min_speed, velocity.length()))
+	
+	var steer = input_provider.get_steering_axis()
 	steer_angle = lerp(steer_angle, steer * deg_to_rad(steering_limit), delta * steering_speed)
-
+	steer_angle *= vel_bias
+	
 	front_right_wheel.rotation.y = steer_angle
 	front_left_wheel.rotation.y = steer_angle
-
+	
+	mesh.rotation.z = lerp_angle(mesh.rotation.z, -steer_angle*2, delta * 20)
+	
 	if input_provider.is_accelerating():
 		acceleration = -transform.basis.z * engine_power
 	if input_provider.is_braking():
