@@ -16,6 +16,7 @@ class_name CarBase extends CharacterBody3D
 @export_group("Steering")
 @export_custom(0, "suffix:deg/10/s") var max_steering_speed := 10
 @export_custom(0, "suffix:deg/10/s²") var steer_acceleration := 0.4
+@export_custom(0, "suffix:deg/10/s²") var steer_deceleration := 0.4
 @export var steer_wheel_angle_multiplier := 1.2
 @export var steer_mesh_angle_multiplier := 1.2
 
@@ -86,19 +87,24 @@ func apply_friction(delta: float) -> void:
 	var friction_force: Vector3 = velocity * friction * delta
 	var drag_force: Vector3 = velocity * velocity.length() * drag * delta
 	acceleration += drag_force + friction_force
+	
+	if input_provider.is_braking():
+		velocity = velocity.normalized() * min(velocity.length(), max_speed_reverse)
 
 
 func calculate_steering(delta: float) -> void:
-	
-	
 	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
 	var diff = target_steer_direction - current_steer_direction
 	
 	var speed = velocity.slide(up_direction).length()
 	
 	var t = clampf(speed / 10.0, 0, 1)
-	var accel = lerp(0.0, steer_acceleration, t)
-	current_steer_direction += diff * accel/10 # ignore delta since we're inside physics step
+	var accel := lerpf(0.0, steer_acceleration, t)
+	var decel := steer_deceleration
+	
+	var acceleration_rate = accel if sign(target_steer_direction) != 0 else decel
+	
+	current_steer_direction += diff * acceleration_rate/10 # ignore delta since we're inside physics step
 	
 	
 	if floor_cast.is_colliding():
