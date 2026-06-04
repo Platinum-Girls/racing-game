@@ -3,10 +3,6 @@
 [ext_resource type="Script" uid="uid://obie0h625836" path="res://game/features/car/car.script.gd" id="1_8khw0"]
 [ext_resource type="PackedScene" uid="uid://c24c0odmarfok" path="res://game/kenney_cars/race.glb" id="2_f6mjb"]
 
-[sub_resource type="Curve" id="Curve_f6mjb"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
-point_count = 2
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_f6mjb"]
 size = Vector3(1, 0.6, 2.5)
 
@@ -16,17 +12,20 @@ radius = 0.29492188
 
 [node name="Car" type="CharacterBody3D" unique_id=862314262 node_paths=PackedStringArray("mesh", "front_right_wheel", "front_left_wheel", "floor_cast", "front_ray", "rear_ray")]
 collision_mask = 16
+floor_stop_on_slope = false
 script = ExtResource("1_8khw0")
-mesh = NodePath("Mesh/body")
-front_right_wheel = NodePath("Mesh/wheel-front-left")
-front_left_wheel = NodePath("Mesh/wheel-front-right")
+mesh = NodePath("Mesh")
+front_right_wheel = NodePath("Mesh/Car/wheel-front-left")
+front_left_wheel = NodePath("Mesh/Car/wheel-front-right")
 floor_cast = NodePath("FloorCast")
 front_ray = NodePath("FrontRay")
 rear_ray = NodePath("RearRay")
 jump_speed = 8.0
 wheel_base = 1.5
-steering_curve = SubResource("Curve_f6mjb")
-steering_min_speed = 10
+max_steering_speed = 15
+steer_acceleration = 0.28
+steer_wheel_angle_multiplier = 12.0
+steer_mesh_angle_multiplier = 1.0
 
 [node name="FloorCast" type="ShapeCast3D" parent="." unique_id=1988943407]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
@@ -46,8 +45,11 @@ shape = SubResource("CylinderShape3D_f6mjb")
 target_position = Vector3(-1.5, 0, 0)
 collision_mask = 16
 
-[node name="Mesh" parent="." unique_id=743088303 instance=ExtResource("2_f6mjb")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+[node name="Mesh" type="Node3D" parent="." unique_id=387276889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
+
+[node name="Car" parent="Mesh" unique_id=743088303 instance=ExtResource("2_f6mjb")]
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 0, -0.4)
 
 [node name="CollisionBody" type="CollisionShape3D" parent="." unique_id=1349575834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -2.9802322e-08)
@@ -61,4 +63,4 @@ shape = SubResource("CylinderShape3D_f6mjb")
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.3, 0.88)
 shape = SubResource("CylinderShape3D_f6mjb")
 
-[editable path="Mesh"]
+[editable path="Mesh/Car"]

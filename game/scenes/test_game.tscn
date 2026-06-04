@@ -29,7 +29,7 @@ physics_interpolation_mode = 1
 [node name="Car" parent="." unique_id=25812172 node_paths=PackedStringArray("input_provider") instance=ExtResource("1_gieot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -122.42819, 4.2289824, 140.70082)
 input_provider = NodePath("PlayerInputProvider")
-steering_limit = 12.0
+jump_speed = 20.0
 engine_power = 15.0
 braking = -14.0
 max_speed_reverse = 8.0

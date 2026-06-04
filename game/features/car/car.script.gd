@@ -8,14 +8,18 @@ class_name CarBase extends CharacterBody3D
 @export var front_ray: ShapeCast3D
 @export var rear_ray: ShapeCast3D
 
-@export_group("Car Properties")
+@export_group("Physical Properties")
 @export_custom(0, "suffix:m/s") var gravity: float = -20
 @export_custom(0, "suffix:m/s") var jump_speed: float = 20
 @export_custom(0, "suffix:m") var wheel_base: float = 0.6
-@export_custom(0, "suffix:deg") var steering_limit: float = 10
-@export var steering_curve: Curve
-@export_custom(0, "suffix:deg/s") var steering_min_speed = 8
-@export_custom(0, "suffix:deg/s") var steering_speed: float = 8
+
+@export_group("Steering")
+@export_custom(0, "suffix:deg/10/s") var max_steering_speed := 10
+@export_custom(0, "suffix:deg/10/s²") var steer_acceleration := 0.4
+@export var steer_wheel_angle_multiplier := 1.2
+@export var steer_mesh_angle_multiplier := 1.2
+
+@export_group("Engine")
 @export_custom(0, "suffix:m/s") var engine_power: float = 6
 @export_custom(0, "suffix:m/s") var braking: float = -9
 @export_custom(0, "suffix:m/s") var friction: float = -2
@@ -27,7 +31,9 @@ const STICK_TO_LOOP_THRESHOLD = 16
 
 # Car state properties
 var acceleration := Vector3.ZERO
-var steer_angle: float = 0.0
+var current_steer_direction: float
+
+var steer_input: float
 
 
 func xz(vec: Vector3) -> Vector3:
@@ -36,10 +42,13 @@ func xz(vec: Vector3) -> Vector3:
 
 func _physics_process(delta: float) -> void:
 	acceleration = Vector3.ZERO
-	if is_on_floor():
-		apply_input(delta)
+	steer_input = input_provider.get_steering_axis()
+	
+	if floor_cast.is_colliding():
+		apply_acceleration()
 		apply_friction(delta)
-		calculate_steering(delta)
+		
+	calculate_steering(delta)
 	velocity += acceleration * delta
 
 	if input_provider.is_jumping() && floor_cast.is_colliding():
@@ -53,7 +62,7 @@ func _physics_process(delta: float) -> void:
 
 
 func get_gravity_vector() -> Vector3:
-	if is_on_floor() and floor_cast.is_colliding() and velocity.length() > STICK_TO_LOOP_THRESHOLD:
+	if floor_cast.is_colliding() and floor_cast.is_colliding() and velocity.length() > STICK_TO_LOOP_THRESHOLD:
 		up_direction = floor_cast.get_collision_normal(0)
 	else:
 		up_direction = Vector3.UP
@@ -61,21 +70,7 @@ func get_gravity_vector() -> Vector3:
 	return up_direction * gravity
 
 
-func apply_input(delta: float) -> void:
-	
-	var vel_bias := 1.0
-	if velocity.length() < steering_min_speed:
-		vel_bias = steering_curve.sample(inverse_lerp(0, steering_min_speed, velocity.length()))
-	
-	front_right_wheel.rotation.y = steer_angle
-	front_left_wheel.rotation.y = steer_angle
-	
-	var steer := input_provider.get_steering_axis()
-	steer_angle = lerp(steer_angle, steer * deg_to_rad(steering_limit), delta * steering_speed)
-	steer_angle *= vel_bias
-	
-	mesh.rotation.z = lerp_angle(mesh.rotation.z, -steer_angle*2, delta * 20)
-	
+func apply_acceleration() -> void:
 	if input_provider.is_accelerating():
 		acceleration = -transform.basis.z * engine_power
 	if input_provider.is_braking():
@@ -94,17 +89,25 @@ func apply_friction(delta: float) -> void:
 
 
 func calculate_steering(delta: float) -> void:
-	var rear_wheel: Vector3 = transform.origin + transform.basis.z * wheel_base / 2.0
-	var front_wheel: Vector3 = transform.origin - transform.basis.z * wheel_base / 2.0
-	rear_wheel += velocity * delta
-	front_wheel += velocity.rotated(transform.basis.y, steer_angle) * delta
-	var new_heading := rear_wheel.direction_to(front_wheel)
-	var d := new_heading.dot(velocity.normalized())
-	if d > 0:
-		velocity = new_heading * velocity.length()
-	elif d < 0:
-		velocity = -new_heading * min(velocity.length(), max_speed_reverse)
-	look_at(transform.origin + new_heading, transform.basis.y)
+	
+	
+	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
+	var diff = target_steer_direction - current_steer_direction
+	
+	var speed = velocity.slide(up_direction).length()
+	
+	var t = clampf(speed / 10.0, 0, 1)
+	var accel = lerp(0.0, steer_acceleration, t)
+	current_steer_direction += diff * accel/10 # ignore delta since we're inside physics step
+	
+	
+	if floor_cast.is_colliding():
+		var new_basis = velocity.rotated(basis.y, current_steer_direction).normalized()
+		
+		rotation.y += current_steer_direction
+		
+		velocity = velocity.length() * new_basis
+
 
 
 func align_with_ground() -> void:
@@ -123,3 +126,18 @@ func align_with_y(xform, new_y) -> Transform3D:
 	xform.basis.x = -xform.basis.z.cross(new_y)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
+
+
+
+func _process(delta: float) -> void:
+	steering_visual_feedback(delta)
+	
+func steering_visual_feedback(delta: float) -> void:
+	var speed = velocity.slide(up_direction).length()
+	var mesh_yaw_t = pow(clampf(speed / 15, 0, 1), 0.5)
+	var mesh_yaw = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_mesh_angle_multiplier, mesh_yaw_t)
+	
+	mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
+	front_right_wheel.rotation.y = current_steer_direction * steer_wheel_angle_multiplier
+	front_left_wheel.rotation.y = current_steer_direction * steer_wheel_angle_multiplier
+	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
