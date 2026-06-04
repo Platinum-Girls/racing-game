@@ -88,7 +88,7 @@ func apply_friction(delta: float) -> void:
 	
 	velocity -= velocity * velocity.length() * drag * delta
 	
-	if input_provider.is_braking():
+	if velocity.dot(-basis.z) < 0:
 		velocity = velocity.normalized() * min(velocity.length(), max_speed_reverse)
 
 

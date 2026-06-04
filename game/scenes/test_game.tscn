@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://dqk8d5tvee45m" path="res://game/gameplay/input/player_input_provider.gd" id="2_4ff6f"]
 [ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/features/car/basic_camera.gd" id="2_ashi6"]
 [ext_resource type="PackedScene" uid="uid://cn3s68gt52ayn" path="res://road2.glb" id="5_7xj4p"]
-[ext_resource type="Script" uid="uid://cxclge616jqli" path="res://game/scenes/label.gd" id="5_eys72"]
 [ext_resource type="Material" uid="uid://c1a8pc1ml2p6" path="res://game/debugging/debug_material.tres" id="6_7xj4p"]
+[ext_resource type="PackedScene" uid="uid://d1ewx6epljpwq" path="res://test_map.glb" id="6_no4cj"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_26caj"]
 mie_eccentricity = 0.87
@@ -77,15 +77,12 @@ environment = SubResource("Environment_4ff6f")
 transform = Transform3D(0.83103293, 0.15502281, 0.53418356, -0.5542002, 0.3126037, 0.77145386, -0.047394812, -0.9371483, 0.34569773, 5.481962, 9.300289, 0)
 shadow_enabled = true
 
-[node name="Label" type="Label" parent="." unique_id=599254887 node_paths=PackedStringArray("car")]
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("5_eys72")
-car = NodePath("../Car")
-
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
 
 [node name="Plane_001" parent="road2" index="2" unique_id=1065885091]
 material_override = ExtResource("6_7xj4p")
+
+[node name="test_map" parent="." unique_id=765554227 instance=ExtResource("6_no4cj")]
+transform = Transform3D(-0.4, 0, 3.4969112e-08, 0, 0.4, 0, -3.4969112e-08, 0, -0.4, 208.9, -3.433, -208.5)
 
 [editable path="road2"]
