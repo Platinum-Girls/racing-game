@@ -7,6 +7,7 @@ class_name CarBase extends CharacterBody3D
 @export var floor_cast: ShapeCast3D
 @export var front_ray: ShapeCast3D
 @export var rear_ray: ShapeCast3D
+@export var drift_module: DriftModule
 
 @export_group("Car Properties")
 @export_custom(0, "suffix:m/s") var gravity: float = -20
@@ -71,16 +72,21 @@ func apply_input(delta: float) -> void:
 	front_left_wheel.rotation.y = steer_angle
 	
 	var steer := input_provider.get_steering_axis()
-	steer_angle = lerp(steer_angle, steer * deg_to_rad(steering_limit), delta * steering_speed)
+	steer_angle = lerp(steer_angle, steer * deg_to_rad(steering_limit * drift_module.steering_limit_modifier), delta * steering_speed)
 	steer_angle *= vel_bias
 	
 	mesh.rotation.z = lerp_angle(mesh.rotation.z, -steer_angle*2, delta * 20)
 	
+	handle_drifting(delta)
+	
 	if input_provider.is_accelerating():
-		acceleration = -transform.basis.z * engine_power
+		acceleration = -transform.basis.z * engine_power * drift_module.engine_power_modifier
 	if input_provider.is_braking():
 		acceleration = -transform.basis.z * braking
 
+func handle_drifting(delta: float) -> void:
+	drift_module.drift(delta)
+	
 
 func apply_friction(delta: float) -> void:
 	if xz(velocity).length() < 0.2 and xz(acceleration).length() < 0.01:
