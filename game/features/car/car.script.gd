@@ -23,8 +23,8 @@ class_name CarBase extends CharacterBody3D
 @export_group("Engine")
 @export_custom(0, "suffix:m/s") var engine_power: float = 6
 @export_custom(0, "suffix:m/s") var braking: float = -9
-@export_custom(0, "suffix:m/s") var friction: float = -2
-@export_custom(0, "suffix:m/s²") var drag: float = -2
+@export_custom(0, "suffix:m/s") var friction: float = 2
+@export_custom(0, "suffix:m/s²") var drag: float = 2
 @export_custom(0, "suffix:m/s") var max_speed_reverse: float = 3
 
 
@@ -79,14 +79,20 @@ func apply_acceleration() -> void:
 
 
 func apply_friction(delta: float) -> void:
-	if xz(velocity).length() < 0.2 and xz(acceleration).length() < 0.01:
+	var fwd_vel = velocity.slide(up_direction)
+	if fwd_vel.length() < 0.2 and acceleration.length() < 0.01:
 		velocity.x = 0
 		velocity.z = 0
 		return
+	
+	velocity -= fwd_vel.normalized() * friction * delta
+	velocity -= velocity * velocity.length() * drag * delta
+	
 
-	var friction_force: Vector3 = velocity * friction * delta
-	var drag_force: Vector3 = velocity * velocity.length() * drag * delta
-	acceleration += drag_force + friction_force
+
+	#var friction_force: Vector3 = velocity * friction * delta
+	#var drag_force: Vector3 = velocity * velocity.length() * drag * delta
+	#acceleration += drag_force + friction_force
 	
 	if input_provider.is_braking():
 		velocity = velocity.normalized() * min(velocity.length(), max_speed_reverse)
@@ -98,13 +104,16 @@ func calculate_steering(delta: float) -> void:
 	
 	var speed = velocity.slide(up_direction).length()
 	
-	var t = clampf(speed / 10.0, 0, 1)
-	var accel := lerpf(0.0, steer_acceleration, t)
-	var decel := steer_deceleration
-	
-	var acceleration_rate = accel if sign(target_steer_direction) != 0 else decel
-	
-	current_steer_direction += diff * acceleration_rate/10 # ignore delta since we're inside physics step
+	if speed > 2:
+		var t = clampf(speed / 20.0, 0, 1)
+		var accel := lerpf(0.0, steer_acceleration, t)
+		var decel := steer_deceleration
+		
+		var acceleration_rate = accel if sign(target_steer_direction) != 0 else decel
+		
+		current_steer_direction += diff * acceleration_rate/10 # ignore delta since we're inside physics step
+	else:
+		current_steer_direction = lerp(current_steer_direction, 0.0, steer_deceleration)
 	
 	
 	if floor_cast.is_colliding():
@@ -140,9 +149,12 @@ func _process(delta: float) -> void:
 	
 func steering_visual_feedback(delta: float) -> void:
 	var speed = velocity.slide(up_direction).length()
-	var mesh_yaw_t = pow(clampf(speed / 15, 0, 1), 0.5)
-	var mesh_yaw = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_mesh_angle_multiplier, mesh_yaw_t)
+	var mesh_yaw_t = pow(clampf(speed / 20, 0, 1), 0.5)
 	
+	var mesh_yaw := 0.0
+	if speed > 2:
+		mesh_yaw = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_mesh_angle_multiplier, mesh_yaw_t)
+
 	mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
 	front_right_wheel.rotation.y = current_steer_direction * steer_wheel_angle_multiplier
 	front_left_wheel.rotation.y = current_steer_direction * steer_wheel_angle_multiplier
