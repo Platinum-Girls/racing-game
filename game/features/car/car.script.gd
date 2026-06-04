@@ -37,11 +37,6 @@ var current_steer_direction: float
 
 var steer_input: float
 
-
-func xz(vec: Vector3) -> Vector3:
-	return Vector3(vec.x, 0, vec.z)
-
-
 func _physics_process(delta: float) -> void:
 	acceleration = Vector3.ZERO
 	steer_input = input_provider.get_steering_axis()
@@ -50,7 +45,7 @@ func _physics_process(delta: float) -> void:
 		apply_acceleration()
 		apply_friction(delta)
 		
-	calculate_steering(delta)
+	calculate_steering()
 	velocity += acceleration * delta
 
 	if input_provider.is_jumping() && floor_cast.is_colliding():
@@ -93,17 +88,11 @@ func apply_friction(delta: float) -> void:
 	
 	velocity -= velocity * velocity.length() * drag * delta
 	
-
-
-	#var friction_force: Vector3 = velocity * friction * delta
-	#var drag_force: Vector3 = velocity * velocity.length() * drag * delta
-	#acceleration += drag_force + friction_force
-	
 	if input_provider.is_braking():
 		velocity = velocity.normalized() * min(velocity.length(), max_speed_reverse)
 
 
-func calculate_steering(delta: float) -> void:
+func calculate_steering() -> void:
 	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
 	var diff = target_steer_direction - current_steer_direction
 	
@@ -146,8 +135,6 @@ func align_with_y(xform, new_y) -> Transform3D:
 	xform.basis.x = -xform.basis.z.cross(new_y)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
-
-
 
 func _process(delta: float) -> void:
 	steering_visual_feedback(delta)
