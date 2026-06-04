@@ -21,9 +21,10 @@ class_name CarBase extends CharacterBody3D
 @export var steer_mesh_angle_multiplier := 1.2
 
 @export_group("Engine")
-@export_custom(0, "suffix:m/s") var engine_power: float = 6
-@export_custom(0, "suffix:m/s") var braking: float = -9
-@export_custom(0, "suffix:m/s") var friction: float = 2
+@export_custom(0, "suffix:m/s²") var engine_power: float = 6
+@export_custom(0, "suffix:m/s²") var braking: float = -9
+@export_custom(0, "suffix:m/s²") var friction: float = 2
+@export_custom(0, "suffix:m/s²") var lateral_friction: float = 10
 @export_custom(0, "suffix:m/s²") var drag: float = 2
 @export_custom(0, "suffix:m/s") var max_speed_reverse: float = 3
 
@@ -79,13 +80,17 @@ func apply_acceleration() -> void:
 
 
 func apply_friction(delta: float) -> void:
-	var fwd_vel = velocity.slide(up_direction)
-	if fwd_vel.length() < 0.2 and acceleration.length() < 0.01:
+	var xz_vel = velocity.slide(up_direction)
+	if xz_vel.length() < 0.2 and acceleration.length() < 0.01:
 		velocity.x = 0
 		velocity.z = 0
 		return
-	
+		
+	var fwd_vel = basis.z * velocity.dot(basis.z)
 	velocity -= fwd_vel.normalized() * friction * delta
+	var lateral_vel = basis.x * velocity.dot(basis.x)
+	velocity -= lateral_vel.normalized() * lateral_friction * delta
+	
 	velocity -= velocity * velocity.length() * drag * delta
 	
 
@@ -155,7 +160,9 @@ func steering_visual_feedback(delta: float) -> void:
 	if speed > 2:
 		mesh_yaw = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_mesh_angle_multiplier, mesh_yaw_t)
 
+	var wheel_angle = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_wheel_angle_multiplier, mesh_yaw_t)
+	front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
+	front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
+	
 	mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
-	front_right_wheel.rotation.y = current_steer_direction * steer_wheel_angle_multiplier
-	front_left_wheel.rotation.y = current_steer_direction * steer_wheel_angle_multiplier
 	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)

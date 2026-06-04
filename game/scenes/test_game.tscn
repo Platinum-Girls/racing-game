@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/features/car/basic_camera.gd" id="2_ashi6"]
 [ext_resource type="PackedScene" uid="uid://cn3s68gt52ayn" path="res://road2.glb" id="5_7xj4p"]
 [ext_resource type="Script" uid="uid://cxclge616jqli" path="res://game/scenes/label.gd" id="5_eys72"]
+[ext_resource type="Material" uid="uid://c1a8pc1ml2p6" path="res://game/debugging/debug_material.tres" id="6_7xj4p"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_26caj"]
 mie_eccentricity = 0.87
@@ -30,6 +31,7 @@ physics_interpolation_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -122.42819, 4.2289824, 140.70082)
 input_provider = NodePath("PlayerInputProvider")
 jump_speed = 20.0
+steer_wheel_angle_multiplier = 1.5
 engine_power = 12.0
 braking = -14.0
 friction = 2.0
@@ -40,9 +42,11 @@ max_speed_reverse = 8.0
 script = ExtResource("2_4ff6f")
 metadata/_custom_type_script = "uid://dqk8d5tvee45m"
 
-[node name="Node3D" type="Node3D" parent="." unique_id=419274260 node_paths=PackedStringArray("target")]
+[node name="Node3D" type="Node3D" parent="." unique_id=419274260 node_paths=PackedStringArray("target", "cameras")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -122.42819, 12.528982, 140.70082)
 script = ExtResource("2_ashi6")
 target = NodePath("../Car")
+cameras = [NodePath("SpringArm3D/Camera3D"), NodePath("SpringArm3D2/Camera3D")]
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Node3D" unique_id=1915209332]
 transform = Transform3D(-1, 4.3942425e-08, 7.557649e-08, 0, -0.86449426, 0.50264275, 8.742278e-08, 0.50264275, 0.86449426, 0, 0.1, 0)
@@ -51,6 +55,17 @@ spring_length = 5.0
 
 [node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D" unique_id=598044707]
 transform = Transform3D(-1, -8.742277e-08, 0, 7.986468e-08, -0.91354537, 0.4067366, -3.5558045e-08, 0.4067366, 0.91354537, 0, 0, 0)
+doppler_tracking = 2
+current = true
+fov = 80.0
+
+[node name="SpringArm3D2" type="SpringArm3D" parent="Node3D" unique_id=356144080]
+transform = Transform3D(1, -8.742278e-08, 8.742277e-08, -8.742278e-08, -4.371139e-08, 1, -8.742277e-08, -1, -4.3711395e-08, 0, 0.1, 0)
+collision_mask = 16
+spring_length = 20.0
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D2" unique_id=850235930]
+transform = Transform3D(1, -4.8157666e-08, -1.5253521e-07, 2.3703002e-08, 0.98768836, -0.15643455, 1.5819074e-07, 0.15643455, 0.98768836, 0, 0, 0)
 doppler_tracking = 2
 current = true
 fov = 80.0
@@ -69,3 +84,8 @@ script = ExtResource("5_eys72")
 car = NodePath("../Car")
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
+
+[node name="Plane_001" parent="road2" index="2" unique_id=1065885091]
+material_override = ExtResource("6_7xj4p")
+
+[editable path="road2"]
