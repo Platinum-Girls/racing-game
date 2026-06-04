@@ -94,6 +94,7 @@ func apply_friction(delta: float) -> void:
 
 func calculate_steering() -> void:
 	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
+	if input_provider.is_braking(): target_steer_direction = -target_steer_direction
 	var diff = target_steer_direction - current_steer_direction
 	
 	var speed = velocity.slide(up_direction).length()
