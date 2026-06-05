@@ -146,6 +146,8 @@ func steering_visual_feedback(delta: float) -> void:
 	var mesh_yaw := 0.0
 	if speed > 2:
 		mesh_yaw = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_mesh_angle_multiplier, mesh_yaw_t)
+	if input_provider.is_braking(): 
+		mesh_yaw = -mesh_yaw
 
 	var wheel_angle = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_wheel_angle_multiplier, mesh_yaw_t)
 	front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
