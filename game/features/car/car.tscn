@@ -10,6 +10,16 @@
 [ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="6_oaolh"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="9_2pmk8"]
 
+[sub_resource type="Resource" id="Resource_fhq7n"]
+script = ExtResource("6_oaolh")
+expression = "drifting == true and steer_input != 0"
+metadata/_custom_type_script = "uid://le5w1cm0ul8p"
+
+[sub_resource type="Resource" id="Resource_q3634"]
+script = ExtResource("6_oaolh")
+expression = "drifting == false"
+metadata/_custom_type_script = "uid://le5w1cm0ul8p"
+
 [sub_resource type="Resource" id="Resource_2pmk8"]
 script = ExtResource("6_oaolh")
 expression = "grounded == false"
@@ -44,7 +54,13 @@ steer_acceleration = 0.28
 steer_deceleration = 0.35
 steer_wheel_angle_multiplier = 12.0
 steer_mesh_angle_multiplier = 1.0
+engine_power = 6.5
 friction = -4.0
+outward_centrifugal_force = 20.0
+base_drifting_turn_speed = 5.5
+inward_drifting_turn_speed = 7.0
+outward_drifting_turn_speed = 4.0
+drifting_mesh_angle_multiplier = 5.0
 
 [node name="Car States" type="Node" parent="." unique_id=1712702681]
 script = ExtResource("4_yw1sd")
@@ -56,9 +72,30 @@ script = ExtResource("5_ids31")
 initial_state = NodePath("Grounded")
 metadata/_custom_type_script = "uid://jk2jm1g6q853"
 
-[node name="Grounded" type="Node" parent="Car States/Root" unique_id=1179734182]
+[node name="Grounded" type="Node" parent="Car States/Root" unique_id=1101631984]
+script = ExtResource("5_ids31")
+initial_state = NodePath("Normal")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Normal" type="Node" parent="Car States/Root/Grounded" unique_id=1499278821]
 script = ExtResource("4_e2v51")
 metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="ToDrifting" type="Node" parent="Car States/Root/Grounded/Normal" unique_id=280180773]
+script = ExtResource("5_v4mqv")
+to = NodePath("../../Drifting")
+guard = SubResource("Resource_fhq7n")
+delay_in_seconds = "0.0"
+
+[node name="Drifting" type="Node" parent="Car States/Root/Grounded" unique_id=1823646825]
+script = ExtResource("4_e2v51")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="ToNormal" type="Node" parent="Car States/Root/Grounded/Drifting" unique_id=563887408]
+script = ExtResource("5_v4mqv")
+to = NodePath("../../Normal")
+guard = SubResource("Resource_q3634")
+delay_in_seconds = "0.0"
 
 [node name="ToAir" type="Node" parent="Car States/Root/Grounded" unique_id=1632594319]
 script = ExtResource("5_v4mqv")
@@ -125,7 +162,14 @@ offset_bottom = -525.0
 initial_node_to_watch = NodePath("../Car States")
 
 [connection signal="state_physics_processing" from="Car States/Root/Grounded" to="." method="_on_grounded_physics_processing"]
+[connection signal="state_processing" from="Car States/Root/Grounded" to="." method="_on_grounded_processing"]
+[connection signal="state_physics_processing" from="Car States/Root/Grounded/Normal" to="." method="_on_normal_state_physics_processing"]
+[connection signal="state_processing" from="Car States/Root/Grounded/Normal" to="." method="_on_normal_state_processing"]
+[connection signal="state_entered" from="Car States/Root/Grounded/Drifting" to="." method="_on_drifting_entered"]
+[connection signal="state_physics_processing" from="Car States/Root/Grounded/Drifting" to="." method="_on_drifting_physics_processing"]
+[connection signal="state_processing" from="Car States/Root/Grounded/Drifting" to="." method="_on_drifting_processing"]
 [connection signal="state_exited" from="Car States/Root/Air" to="." method="_on_air_exited"]
 [connection signal="state_physics_processing" from="Car States/Root/Air" to="." method="_on_air_physics_processing"]
+[connection signal="state_processing" from="Car States/Root/Air" to="." method="_on_air_processing"]
 
 [editable path="Mesh/Car"]

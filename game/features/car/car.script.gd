@@ -28,6 +28,17 @@ class_name CarBase extends CharacterBody3D
 @export_custom(0, "suffix:m/s²") var drag: float = 2
 @export_custom(0, "suffix:m/s") var max_speed_reverse: float = 3
 
+@export_group("Drifting")
+@export_custom(0, "suffix:%") var base_drifting_acceleration_perc := 80.0
+@export_custom(0, "suffix:deg/10/s²") var outward_centrifugal_force := 0.4
+@export_custom(0, "suffix:deg/10/s") var base_drifting_turn_speed := 10.0
+@export_custom(0, "suffix:deg/10/s") var inward_drifting_turn_speed := 10.0
+@export_custom(0, "suffix:deg/10/s") var outward_drifting_turn_speed := 10.0
+
+@export var drifting_mesh_angle_multiplier = 1.4
+#@export_custom(0, "suffix:deg/10/s") var base_drifting_speed := 10
+
+
 @onready var state_chart: StateChart = $"Car States"
 
 const STICK_TO_LOOP_THRESHOLD = 16
@@ -43,24 +54,16 @@ static func clamp01(number: float) -> float:
 func _physics_process(delta: float) -> void:
 	steer_input = input_provider.get_steering_axis()
 	
-
 	if input_provider.is_jumping() && floor_cast.is_colliding():
 		velocity.y += jump_speed
 	else:
-		velocity += get_gravity_vector() * delta
+		velocity += up_direction * gravity * delta
 	
+	state_chart.set_expression_property(&"drifting", Input.is_action_pressed(&"drift"))
 	state_chart.set_expression_property(&"grounded", floor_cast.is_colliding())
+	state_chart.set_expression_property(&"steer_input", roundi(steer_input))
 
 	move_and_slide()
-
-func get_gravity_vector() -> Vector3:
-	if floor_cast.is_colliding() and floor_cast.is_colliding() and velocity.length() > STICK_TO_LOOP_THRESHOLD:
-		up_direction = floor_cast.get_collision_normal(0)
-	else:
-		up_direction = Vector3.UP
-
-	return up_direction * gravity
-
 
 func apply_acceleration(delta: float) -> void:
 	var acceleration = Vector3.ZERO
@@ -90,7 +93,7 @@ func apply_friction(delta: float) -> void:
 		velocity = velocity.normalized() * min(velocity.length(), max_speed_reverse)
 
 
-func calculate_steering() -> void:
+func calculate_steer_direction() -> void:
 	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
 	if input_provider.is_braking(): 
 		target_steer_direction = -target_steer_direction
@@ -110,9 +113,8 @@ func calculate_steering() -> void:
 	else:
 		current_steer_direction = lerp(current_steer_direction, 0.0, steer_deceleration)
 	
-	steer_redirect_velocity()
 
-func steer_redirect_velocity() -> void:
+func perform_steering() -> void:
 	if floor_cast.is_colliding():
 		var new_basis = velocity.rotated(basis.y, current_steer_direction).normalized()
 		
@@ -135,9 +137,6 @@ func align_with_y(xform, new_y) -> Transform3D:
 	xform.basis.x = -xform.basis.z.cross(new_y)
 	xform.basis = xform.basis.orthonormalized()
 	return xform
-
-func _process(delta: float) -> void:
-	steering_visual_feedback(delta)
 	
 func steering_visual_feedback(delta: float) -> void:
 	var speed = velocity.slide(up_direction).length()
@@ -158,13 +157,16 @@ func steering_visual_feedback(delta: float) -> void:
 
 
 func _on_grounded_physics_processing(delta: float) -> void:
-	apply_acceleration(delta)
+	if velocity.length() > STICK_TO_LOOP_THRESHOLD:
+		up_direction = floor_cast.get_collision_normal(0)
+	else:
+		up_direction = Vector3.UP
+	
 	apply_friction(delta)
-	
-	calculate_steering()
-	
 	align_with_ground()
 
+func _on_grounded_processing(delta: float) -> void:
+	pass
 
 var air_counter = 0
 func _on_air_physics_processing(delta: float) -> void:
@@ -177,6 +179,65 @@ func _on_air_physics_processing(delta: float) -> void:
 	
 	quaternion = quaternion.slerp(Quaternion(Vector3.UP, rotation.y), delta * (0.1 + 2*mult))
 
+func _on_air_processing(delta: float) -> void:
+	steering_visual_feedback(delta)
+
 
 func _on_air_exited() -> void:
 	air_counter = 0
+
+
+#region DRIFTING
+
+func drifting_visual_feedback(delta: float) -> void:
+	var turn_speed = calculate_drifting_turn_speed(sign(steer_input))
+	
+	var mesh_yaw = drifting_direction * deg_to_rad(turn_speed) * drifting_mesh_angle_multiplier
+
+	var wheel_angle = drifting_direction * deg_to_rad(max_steering_speed) * steer_wheel_angle_multiplier
+	front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
+	front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
+	
+	#mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
+	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
+
+func calculate_drifting_turn_speed(input: int) -> float:
+	if input == drifting_direction:
+		return inward_drifting_turn_speed
+	elif input == -drifting_direction:
+		return outward_drifting_turn_speed
+	return base_drifting_turn_speed
+
+var drifting_direction: int
+func _on_drifting_entered() -> void:
+	drifting_direction = sign(steer_input)
+
+
+func _on_drifting_physics_processing(delta: float) -> void:
+	velocity += -transform.basis.z * engine_power * delta
+	
+	var turn_speed = calculate_drifting_turn_speed(sign(steer_input))
+	current_steer_direction = drifting_direction * deg_to_rad(turn_speed/10.0)
+	perform_steering()
+	
+	# outward drifting
+	if sign(steer_input) != drifting_direction:
+		velocity += basis.x * drifting_direction * outward_centrifugal_force * delta
+	
+
+
+func _on_drifting_processing(delta: float) -> void:
+	drifting_visual_feedback(delta)
+
+
+#endregion
+
+
+func _on_normal_state_processing(delta: float) -> void:
+	steering_visual_feedback(delta)
+
+
+func _on_normal_state_physics_processing(delta: float) -> void:
+	apply_acceleration(delta)
+	calculate_steer_direction()
+	perform_steering()
