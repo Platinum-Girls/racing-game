@@ -38,6 +38,12 @@ materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
 _subresources={
+"materials": {
+"@MATERIAL:1": {
+"use_external/enabled": true,
+"use_external/path": "uid://c1a8pc1ml2p6"
+}
+},
 "meshes": {
 "road2_Plane": {
 "generate/lightmap_uv": 0,

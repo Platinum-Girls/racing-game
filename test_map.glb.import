@@ -38,6 +38,13 @@ materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
 _subresources={
+"materials": {
+"Gray": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/debugging/debug_material.tres",
+"use_external/path": "uid://c1a8pc1ml2p6"
+}
+},
 "meshes": {
 "test_map_Cube": {
 "generate/lightmap_uv": 0,
@@ -65,6 +72,20 @@ _subresources={
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://meshes/test_map_Plane.res",
 "save_to_file/path": "uid://m6m7d5r7npsk"
+}
+},
+"nodes": {
+"PATH:Plane": {
+"generate/physics": true,
+"physics/layer": 16
+},
+"PATH:Road": {
+"generate/physics": true,
+"physics/layer": 16
+},
+"PATH:Road_001": {
+"generate/physics": true,
+"physics/layer": 16
 }
 }
 }
