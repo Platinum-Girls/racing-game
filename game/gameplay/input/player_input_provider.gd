@@ -21,6 +21,9 @@ func is_jump_pressed() -> bool:
 	
 func is_drifting() -> bool:
 	return Input.is_action_pressed(&"drift")
+	
+func is_drift_pressed() -> bool:
+	return Input.is_action_just_pressed(&"drift")
 
 
 func _input(event: InputEvent) -> void:

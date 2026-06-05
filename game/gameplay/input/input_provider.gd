@@ -19,3 +19,6 @@ func is_jump_pressed() -> bool
 
 @abstract
 func is_drifting() -> bool
+
+@abstract
+func is_drift_pressed() -> bool

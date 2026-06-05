@@ -9,15 +9,21 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="5_v4mqv"]
 [ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="6_oaolh"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="9_2pmk8"]
+[ext_resource type="Script" uid="uid://cfj6rm8tisurt" path="res://game/features/car/wheel_spin.gd" id="9_q3634"]
 
 [sub_resource type="Resource" id="Resource_fhq7n"]
 script = ExtResource("6_oaolh")
-expression = "drifting == true and steer_input != 0"
+expression = "steer_input != 0 and accelerating == true"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
 [sub_resource type="Resource" id="Resource_q3634"]
 script = ExtResource("6_oaolh")
-expression = "drifting == false || accelerating == false"
+expression = "!drifting"
+metadata/_custom_type_script = "uid://le5w1cm0ul8p"
+
+[sub_resource type="Resource" id="Resource_epelm"]
+script = ExtResource("6_oaolh")
+expression = "velocity < 10 and false"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
 [sub_resource type="Resource" id="Resource_2pmk8"]
@@ -36,6 +42,268 @@ size = Vector3(1, 0.6, 2.5)
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_f6mjb"]
 height = 1.3
 radius = 0.29492188
+
+[sub_resource type="Animation" id="Animation_2pmk8"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Mesh/Car:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Mesh/Car:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Mesh/Car:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.4, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Mesh/Car/wheel-front-left:rotate_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../Mesh/Car/wheel-front-right:rotate_speed")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Mesh/Car/wheel-back-left:rotate_speed")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Mesh/Car/wheel-back-right:rotate_speed")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_fhq7n"]
+resource_name = "full_speed"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Mesh/Car/wheel-front-left:rotate_speed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [800.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Mesh/Car/wheel-front-right:rotate_speed")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [800.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Mesh/Car/wheel-back-left:rotate_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [800.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Mesh/Car/wheel-back-right:rotate_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [800.0]
+}
+
+[sub_resource type="Animation" id="Animation_epelm"]
+resource_name = "hop"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Mesh/Car:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(),
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Mesh/Car:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0),
+"points": PackedFloat32Array(-0.0027777776, 0, 0, 0.033333335, 0.21666667, 0.25833333, -0.033333335, 0, 0, 0, 0, -0.03333333, 0.2361111, 0, 0),
+"times": PackedFloat32Array(0, 0.1, 0.2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Mesh/Car:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(2),
+"points": PackedFloat32Array(-0.4, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_q3634"]
+resource_name = "idle"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Mesh/Car/wheel-front-left:rotate_speed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Mesh/Car/wheel-front-right:rotate_speed")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Mesh/Car/wheel-back-left:rotate_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Mesh/Car/wheel-back-right:rotate_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_epelm"]
+_data = {
+&"RESET": SubResource("Animation_2pmk8"),
+&"full_speed": SubResource("Animation_fhq7n"),
+&"hop": SubResource("Animation_epelm"),
+&"idle": SubResource("Animation_q3634")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2pmk8"]
+animation = &"hop"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fhq7n"]
+animation = &"full_speed"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_fhq7n"]
+filter_enabled = true
+filters = ["../Mesh/Car:position:y"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q3634"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_2pmk8"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fhq7n"]
+graph_offset = Vector2(-1028.8942, 116.26169)
+nodes/full_speed/node = SubResource("AnimationNodeAnimation_fhq7n")
+nodes/full_speed/position = Vector2(-660, 360)
+nodes/speed_blend/node = SubResource("AnimationNodeBlend2_2pmk8")
+nodes/speed_blend/position = Vector2(-260, 160)
+nodes/idle/node = SubResource("AnimationNodeAnimation_q3634")
+nodes/idle/position = Vector2(-540, 120)
+nodes/hop/node = SubResource("AnimationNodeOneShot_fhq7n")
+nodes/hop/position = Vector2(80, 100)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_2pmk8")
+nodes/Animation/position = Vector2(-138.31886, 470.33234)
+node_connections = [&"output", 0, &"hop", &"speed_blend", 0, &"idle", &"speed_blend", 1, &"full_speed", &"hop", 0, &"speed_blend", &"hop", 1, &"Animation"]
 
 [node name="Car" type="CharacterBody3D" unique_id=862314262 node_paths=PackedStringArray("mesh", "front_right_wheel", "front_left_wheel", "floor_cast", "front_ray", "rear_ray")]
 collision_mask = 16
@@ -89,6 +357,7 @@ metadata/_custom_type_script = "uid://cytafq8i1y8qm"
 [node name="ToDrifting" type="Node" parent="Car States/Root/Grounded/Normal" unique_id=280180773]
 script = ExtResource("5_v4mqv")
 to = NodePath("../../Drifting")
+event = &"drift_pressed"
 guard = SubResource("Resource_fhq7n")
 delay_in_seconds = "0.0"
 
@@ -101,6 +370,11 @@ script = ExtResource("5_v4mqv")
 to = NodePath("../../Normal")
 guard = SubResource("Resource_q3634")
 delay_in_seconds = "0.0"
+
+[node name="ToNormal2" type="Node" parent="Car States/Root/Grounded/Drifting" unique_id=1200852206]
+script = ExtResource("5_v4mqv")
+guard = SubResource("Resource_epelm")
+delay_in_seconds = "0.5"
 
 [node name="ToAir" type="Node" parent="Car States/Root/Grounded" unique_id=1632594319]
 script = ExtResource("5_v4mqv")
@@ -138,12 +412,6 @@ shape = SubResource("CylinderShape3D_f6mjb")
 target_position = Vector3(-1.5, 0, 0)
 collision_mask = 16
 
-[node name="Mesh" type="Node3D" parent="." unique_id=387276889]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
-
-[node name="Car" parent="Mesh" unique_id=743088303 instance=ExtResource("2_f6mjb")]
-transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 0, -0.4)
-
 [node name="CollisionBody" type="CollisionShape3D" parent="." unique_id=1349575834]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -2.9802322e-08)
 shape = SubResource("BoxShape3D_f6mjb")
@@ -155,6 +423,41 @@ shape = SubResource("CylinderShape3D_f6mjb")
 [node name="CollisionWheelsRear" type="CollisionShape3D" parent="." unique_id=1295581347]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.3, 0.88)
 shape = SubResource("CylinderShape3D_f6mjb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=449188843]
+root_node = NodePath("../AnimationTree")
+libraries/ = SubResource("AnimationLibrary_epelm")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1294368744]
+root_node = NodePath(".")
+tree_root = SubResource("AnimationNodeBlendTree_fhq7n")
+anim_player = NodePath("../AnimationPlayer")
+parameters/speed_blend/blend_amount = 0.0
+parameters/hop/active = false
+parameters/hop/internal_active = false
+parameters/hop/request = 0
+
+[node name="Mesh" type="Node3D" parent="." unique_id=387276889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
+
+[node name="Car" parent="Mesh" unique_id=743088303 instance=ExtResource("2_f6mjb")]
+transform = Transform3D(-1, 0, 1.509958e-07, 0, 1, 0, -1.509958e-07, 0, -1, 0, 0, -0.4)
+
+[node name="wheel-front-left" parent="Mesh/Car" index="1" unique_id=290068100]
+transform = Transform3D(1, 0, 0, 0, -0.70472854, -0.709477, 0, 0.709477, -0.70472854, 0.35, 0.3, 0.6398862)
+script = ExtResource("9_q3634")
+
+[node name="wheel-front-right" parent="Mesh/Car" index="2" unique_id=1395045957]
+transform = Transform3D(1, 0, 0, 0, -0.70472854, -0.709477, 0, 0.709477, -0.70472854, -0.35, 0.3, 0.6398862)
+script = ExtResource("9_q3634")
+
+[node name="wheel-back-left" parent="Mesh/Car" index="3" unique_id=2066239278]
+transform = Transform3D(1, 0, 0, 0, -0.70472854, -0.709477, 0, 0.709477, -0.70472854, 0.35, 0.3, -0.8801137)
+script = ExtResource("9_q3634")
+
+[node name="wheel-back-right" parent="Mesh/Car" index="4" unique_id=63418641]
+transform = Transform3D(1, 0, 0, 0, -0.70472854, -0.709477, 0, 0.709477, -0.70472854, -0.35, 0.3, -0.8801137)
+script = ExtResource("9_q3634")
 
 [node name="Debug Overlay" type="Node3D" parent="." unique_id=1146800568 node_paths=PackedStringArray("car")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -2, 0.20000002, 0)

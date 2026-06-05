@@ -40,6 +40,7 @@ class_name CarBase extends CharacterBody3D
 
 @onready var camera_container: Node3D = $CameraContainer
 @onready var state_chart: StateChart = $"Car States"
+@onready var animation_tree: AnimationTree = $AnimationTree
 
 const STICK_TO_LOOP_THRESHOLD = 16
 
@@ -65,6 +66,11 @@ func _physics_process(delta: float) -> void:
 	state_chart.set_expression_property(&"accelerating", input_provider.is_accelerating())
 	state_chart.set_expression_property(&"grounded", floor_cast.is_colliding())
 	state_chart.set_expression_property(&"steer_input", roundi(steer_input))
+	state_chart.set_expression_property(&"velocity", velocity.slide(up_direction).length())
+	
+	
+	if input_provider.is_drift_pressed():
+		state_chart.send_event(&"drift_pressed")
 
 
 func apply_acceleration(delta: float) -> void:
@@ -168,10 +174,14 @@ func _on_grounded_physics_processing(delta: float) -> void:
 	align_with_ground()
 
 func _on_grounded_processing(delta: float) -> void:
+	animation_tree.set(&"parameters/speed_blend/blend_amount", 
+		pow(clamp01(velocity.slide(up_direction).length() / 15.0), 2))
 	pass
 
 var air_counter = 0
 func _on_air_physics_processing(delta: float) -> void:
+	animation_tree.set(&"parameters/speed_blend/blend_amount", 0)
+	
 	current_steer_direction = 0
 	up_direction = Vector3.UP
 	air_counter += delta
@@ -212,6 +222,7 @@ func calculate_drifting_turn_speed(input: int) -> float:
 var drifting_direction: int
 func _on_drifting_entered() -> void:
 	drifting_direction = sign(steer_input)
+	animation_tree.set(&"parameters/hop/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
 
 func _on_drifting_physics_processing(delta: float) -> void:
