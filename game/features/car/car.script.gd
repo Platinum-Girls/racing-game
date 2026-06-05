@@ -78,7 +78,7 @@ func apply_acceleration(delta: float) -> void:
 
 func apply_friction(delta: float) -> void:
 	var xz_vel = velocity.slide(up_direction)
-	if xz_vel.length() < 0.2 and is_zero_approx(input_provider.get_acceleration_axis()):
+	if xz_vel.length() < 0.1 and is_zero_approx(input_provider.get_acceleration_axis()):
 		velocity = up_direction * velocity.dot(up_direction)
 		return
 		
