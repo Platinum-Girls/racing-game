@@ -38,7 +38,7 @@ class_name CarBase extends CharacterBody3D
 @export var drifting_mesh_angle_multiplier = 1.4
 #@export_custom(0, "suffix:deg/10/s") var base_drifting_speed := 10
 
-
+@onready var camera_container: Node3D = $CameraContainer
 @onready var state_chart: StateChart = $"Car States"
 
 const STICK_TO_LOOP_THRESHOLD = 16
@@ -52,18 +52,20 @@ static func clamp01(number: float) -> float:
 	return clampf(number, 0.0, 1.0)
 
 func _physics_process(delta: float) -> void:
+	move_and_slide()
+	
 	steer_input = input_provider.get_steering_axis()
 	
-	if input_provider.is_jumping() && floor_cast.is_colliding():
+	if input_provider.is_jump_pressed() && floor_cast.is_colliding():
 		velocity.y += jump_speed
 	else:
 		velocity += up_direction * gravity * delta
 	
-	state_chart.set_expression_property(&"drifting", Input.is_action_pressed(&"drift"))
+	state_chart.set_expression_property(&"drifting", input_provider.is_drifting())
+	state_chart.set_expression_property(&"accelerating", input_provider.is_accelerating())
 	state_chart.set_expression_property(&"grounded", floor_cast.is_colliding())
 	state_chart.set_expression_property(&"steer_input", roundi(steer_input))
 
-	move_and_slide()
 
 func apply_acceleration(delta: float) -> void:
 	var acceleration = Vector3.ZERO
@@ -175,7 +177,6 @@ func _on_air_physics_processing(delta: float) -> void:
 	air_counter += delta
 	
 	var mult = pow(clamp01(air_counter / 1), 2)
-	print(mult)
 	
 	quaternion = quaternion.slerp(Quaternion(Vector3.UP, rotation.y), delta * (0.1 + 2*mult))
 
@@ -228,6 +229,8 @@ func _on_drifting_physics_processing(delta: float) -> void:
 
 func _on_drifting_processing(delta: float) -> void:
 	drifting_visual_feedback(delta)
+	
+	camera_container.rotation.y = lerp_angle(camera_container.rotation.y, drifting_direction*deg_to_rad(-5), delta * 4)
 
 
 #endregion
@@ -235,6 +238,7 @@ func _on_drifting_processing(delta: float) -> void:
 
 func _on_normal_state_processing(delta: float) -> void:
 	steering_visual_feedback(delta)
+	camera_container.rotation.y = lerp_angle(camera_container.rotation.y, 0, delta * 4)
 
 
 func _on_normal_state_physics_processing(delta: float) -> void:

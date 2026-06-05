@@ -12,6 +12,7 @@ var current = 0
 
 
 func _ready() -> void:
+	target = $"../Car/CameraContainer"
 	cameras[0].make_current()
 	#DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_CAPTURED)
 	pass
@@ -24,4 +25,4 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	global_position = global_position.lerp(target.global_position, delta * 18)
-	quaternion = quaternion.slerp(target.quaternion, delta * 12)
+	global_rotation = global_rotation.slerp(target.global_rotation, delta * 12)

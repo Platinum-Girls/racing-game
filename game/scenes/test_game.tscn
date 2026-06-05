@@ -29,6 +29,7 @@ physics_interpolation_mode = 1
 
 [node name="Car" parent="." unique_id=25812172 node_paths=PackedStringArray("input_provider") instance=ExtResource("1_gieot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -127.248566, 6.4449778, 153.30481)
+floor_max_angle = 1.0471976
 input_provider = NodePath("PlayerInputProvider")
 jump_speed = 20.0
 steer_wheel_angle_multiplier = 1.5
@@ -79,8 +80,12 @@ shadow_enabled = true
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
 
-[node name="Plane_001" parent="road2" index="2" unique_id=1065885091]
+[node name="Ground" parent="road2" index="2" unique_id=540305349]
 material_override = ExtResource("6_7xj4p")
+
+[node name="RoadCollision" parent="road2" index="3" unique_id=1017576903]
+visibility_range_begin = 10000.0
+visibility_range_end = 0.1
 
 [node name="test_map" parent="." unique_id=765554227 instance=ExtResource("6_no4cj")]
 transform = Transform3D(-0.4, 0, 3.4969112e-08, 0, 0.4, 0, -3.4969112e-08, 0, -0.4, 208.9, -3.433, -208.5)

@@ -62,7 +62,12 @@ inward_drifting_turn_speed = 7.0
 outward_drifting_turn_speed = 4.0
 drifting_mesh_angle_multiplier = 5.0
 
+[node name="CameraContainer" type="Node3D" parent="." unique_id=1553171150]
+editor_description = "Set the camera to follow this node"
+
 [node name="Car States" type="Node" parent="." unique_id=1712702681]
+process_priority = -1
+process_physics_priority = -1
 script = ExtResource("4_yw1sd")
 track_in_editor = true
 metadata/_custom_type_script = "uid://couw105c3bde4"
