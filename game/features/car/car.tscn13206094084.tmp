@@ -36,7 +36,6 @@ front_left_wheel = NodePath("Mesh/Car/wheel-front-right")
 floor_cast = NodePath("FloorCast")
 front_ray = NodePath("FrontRay")
 rear_ray = NodePath("RearRay")
-gravity = -40.0
 jump_speed = 8.0
 wheel_base = 1.5
 max_steering_speed = 15

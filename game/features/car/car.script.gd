@@ -28,35 +28,27 @@ class_name CarBase extends CharacterBody3D
 @export_custom(0, "suffix:m/s²") var drag: float = 2
 @export_custom(0, "suffix:m/s") var max_speed_reverse: float = 3
 
+@onready var state_chart: StateChart = $"Car States"
 
 const STICK_TO_LOOP_THRESHOLD = 16
 
 # Car state properties
-var acceleration := Vector3.ZERO
 var current_steer_direction: float
 
 var steer_input: float
 
 func _physics_process(delta: float) -> void:
-	acceleration = Vector3.ZERO
 	steer_input = input_provider.get_steering_axis()
 	
-	if floor_cast.is_colliding():
-		apply_acceleration()
-		apply_friction(delta)
-		
-	calculate_steering()
-	velocity += acceleration * delta
 
 	if input_provider.is_jumping() && floor_cast.is_colliding():
 		velocity.y += jump_speed
 	else:
 		velocity += get_gravity_vector() * delta
 	
+	state_chart.set_expression_property(&"grounded", floor_cast.is_colliding())
+
 	move_and_slide()
-
-	align_with_ground()
-
 
 func get_gravity_vector() -> Vector3:
 	if floor_cast.is_colliding() and floor_cast.is_colliding() and velocity.length() > STICK_TO_LOOP_THRESHOLD:
@@ -67,18 +59,21 @@ func get_gravity_vector() -> Vector3:
 	return up_direction * gravity
 
 
-func apply_acceleration() -> void:
+func apply_acceleration(delta: float) -> void:
+	var acceleration = Vector3.ZERO
 	if input_provider.is_accelerating():
 		acceleration = -transform.basis.z * engine_power
 	if input_provider.is_braking():
 		acceleration = -transform.basis.z * braking
+	
+	velocity += acceleration * delta
+	
 
 
 func apply_friction(delta: float) -> void:
 	var xz_vel = velocity.slide(up_direction)
-	if xz_vel.length() < 0.2 and acceleration.length() < 0.01:
-		velocity.x = 0
-		velocity.z = 0
+	if xz_vel.length() < 0.2 and is_zero_approx(input_provider.get_acceleration_axis()):
+		velocity = up_direction * velocity.dot(up_direction)
 		return
 		
 	var fwd_vel = basis.z * velocity.dot(basis.z)
@@ -94,7 +89,9 @@ func apply_friction(delta: float) -> void:
 
 func calculate_steering() -> void:
 	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
-	if input_provider.is_braking(): target_steer_direction = -target_steer_direction
+	if input_provider.is_braking(): 
+		target_steer_direction = -target_steer_direction
+	
 	var diff = target_steer_direction - current_steer_direction
 	
 	var speed = velocity.slide(up_direction).length()
@@ -110,15 +107,15 @@ func calculate_steering() -> void:
 	else:
 		current_steer_direction = lerp(current_steer_direction, 0.0, steer_deceleration)
 	
-	
+	steer_redirect_velocity()
+
+func steer_redirect_velocity() -> void:
 	if floor_cast.is_colliding():
 		var new_basis = velocity.rotated(basis.y, current_steer_direction).normalized()
 		
 		rotation.y += current_steer_direction
 		
 		velocity = velocity.length() * new_basis
-
-
 
 func align_with_ground() -> void:
 	# If either wheel is in the air, align to slope.
@@ -129,7 +126,6 @@ func align_with_ground() -> void:
 		var n := ((nr + nf) / 2.0).normalized()
 		var xform := align_with_y(global_transform, n)
 		global_transform = global_transform.interpolate_with(xform, 0.1)
-
 
 func align_with_y(xform, new_y) -> Transform3D:
 	xform.basis.y = new_y
@@ -154,3 +150,15 @@ func steering_visual_feedback(delta: float) -> void:
 	
 	mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
 	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
+
+
+func _on_grounded_physics_processing(delta: float) -> void:
+	apply_acceleration(delta)
+	apply_friction(delta)
+	
+	calculate_steering()
+	
+	align_with_ground()
+
+func _on_air_physics_processing(delta: float) -> void:
+	pass

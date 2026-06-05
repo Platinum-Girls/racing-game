@@ -28,7 +28,7 @@ project/assembly_name="racing-game"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/immediate_gizmos/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/immediate_gizmos/plugin.cfg")
 
 [input]
 
