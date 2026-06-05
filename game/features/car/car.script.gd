@@ -37,6 +37,9 @@ var current_steer_direction: float
 
 var steer_input: float
 
+static func clamp01(number: float) -> float:
+	return clampf(number, 0.0, 1.0)
+
 func _physics_process(delta: float) -> void:
 	steer_input = input_provider.get_steering_axis()
 	
@@ -160,5 +163,18 @@ func _on_grounded_physics_processing(delta: float) -> void:
 	
 	align_with_ground()
 
+
+var air_counter = 0
 func _on_air_physics_processing(delta: float) -> void:
-	pass
+	current_steer_direction = 0
+	up_direction = Vector3.UP
+	air_counter += delta
+	
+	var mult = pow(clamp01(air_counter / 1), 2)
+	print(mult)
+	
+	quaternion = quaternion.slerp(Quaternion(Vector3.UP, rotation.y), delta * (0.1 + 2*mult))
+
+
+func _on_air_exited() -> void:
+	air_counter = 0
