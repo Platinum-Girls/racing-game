@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b60meyl8pyipy"]
+
+[ext_resource type="Script" uid="uid://bsjy3e21ay81g" path="res://game/features/cars/car_visual.gd" id="1_pxdqe"]
+
+[node name="CarMesh" type="Node3D" unique_id=1261609396]
+script = ExtResource("1_pxdqe")
+metadata/_custom_type_script = "uid://bsjy3e21ay81g"

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ctjuo0us34223"]
+
+[ext_resource type="PackedScene" uid="uid://cubaldyspll3f" path="res://game/features/characters/character.tscn" id="1_0xksb"]
+[ext_resource type="PackedScene" uid="uid://c8tcvum6sxhiu" path="res://game/features/characters/blorb/assets/blorb.fbx" id="2_h3jdm"]
+
+[node name="Character" unique_id=1474987451 instance=ExtResource("1_0xksb")]
+
+[node name="blorb" parent="." index="0" unique_id=680149437 instance=ExtResource("2_h3jdm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, -1.7, 0)
+
+[editable path="blorb"]

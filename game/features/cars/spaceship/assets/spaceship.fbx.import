@@ -1,0 +1,77 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://btdrv2xukf1q3"
+path="res://.godot/imported/spaceship.fbx-ac014af76e8628a86d7a7226b63bbf53.scn"
+
+[deps]
+
+source_file="res://game/features/cars/spaceship/assets/spaceship.fbx"
+dest_files=["res://.godot/imported/spaceship.fbx-ac014af76e8628a86d7a7226b63bbf53.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=true
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"DetailedHiglight": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/cars/spaceship/assets/DetailedHiglight.tres",
+"use_external/path": "uid://b05mi50iyd735"
+},
+"SpaceshipBase": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/cars/spaceship/assets/SpaceshipBase.tres",
+"use_external/path": "uid://bbpsdga661xp7"
+},
+"SpaceshipGreen": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/cars/spaceship/assets/SpaceshipGreen.tres",
+"use_external/path": "uid://c3jgbycqcd8jc"
+},
+"SpaceshipLight": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/cars/spaceship/assets/SpaceshipLight.tres",
+"use_external/path": "uid://b2rv6uhe82xuo"
+},
+"ThinnerOutline": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/cars/spaceship/assets/ThinnerOutline.tres",
+"use_external/path": "uid://dxxkulodbrm3t"
+},
+"VehiclesOutline": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/cars/spaceship/assets/VehiclesOutline.tres",
+"use_external/path": "uid://byy7674jmqipe"
+}
+}
+}
+fbx/importer=0
+fbx/allow_geometry_helper_nodes=false
+fbx/embedded_image_handling=1
+fbx/naming_version=2

@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bbpsdga661xp7"]
+
+[sub_resource type="Gradient" id="Gradient_22yee"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 0.14999998, 0.5608336, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rq8fs"]
+gradient = SubResource("Gradient_22yee")
+
+[resource]
+resource_name = "SpaceshipBase"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.1197, 0.19, 0.17476833, 1)
+metallic = 0.73
+metallic_specular = 0.28
+roughness = 0.65
+emission_enabled = true
+rim_tint = 0.0
+rim_texture = SubResource("GradientTexture1D_rq8fs")
+clearcoat = 0.32
+clearcoat_roughness = 0.0

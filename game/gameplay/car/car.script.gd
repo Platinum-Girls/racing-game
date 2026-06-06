@@ -40,7 +40,7 @@ class_name CarBase extends CharacterBody3D
 
 @onready var camera_container: Node3D = $CameraContainer
 @onready var state_chart: StateChart = $"Car States"
-@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var car_visual: CarVisual = $CarMesh
 
 const STICK_TO_LOOP_THRESHOLD = 16
 
@@ -157,8 +157,9 @@ func steering_visual_feedback(delta: float) -> void:
 		mesh_yaw = -mesh_yaw
 
 	var wheel_angle = lerp(0.0, steer_input * deg_to_rad(max_steering_speed) * steer_wheel_angle_multiplier, mesh_yaw_t)
-	front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
-	front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
+	if front_left_wheel and front_right_wheel:
+		front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
+		front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
 	
 	mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
 	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
@@ -173,14 +174,20 @@ func _on_grounded_physics_processing(delta: float) -> void:
 	apply_friction(delta)
 	align_with_ground()
 
-func _on_grounded_processing(delta: float) -> void:
-	animation_tree.set(&"parameters/speed_blend/blend_amount", 
-		pow(clamp01(velocity.slide(up_direction).length() / 15.0), 2))
+func _on_grounded_processing(_delta: float) -> void:
+	var fwd_vel = velocity.slide(up_direction).dot(-basis.z)
+	var blend = 0
+	if fwd_vel > 0: # accelerating
+		blend = clamp01(fwd_vel / 15.0)
+	else: # reversing
+		blend = clamp01(fwd_vel / max_speed_reverse)
+	
+	car_visual.set_speed_blend(pow(blend, 2))
 	pass
 
 var air_counter = 0
 func _on_air_physics_processing(delta: float) -> void:
-	animation_tree.set(&"parameters/speed_blend/blend_amount", 0)
+	car_visual.set_speed_blend(0)
 	
 	current_steer_direction = 0
 	up_direction = Vector3.UP
@@ -206,8 +213,9 @@ func drifting_visual_feedback(delta: float) -> void:
 	var mesh_yaw = drifting_direction * deg_to_rad(turn_speed) * drifting_mesh_angle_multiplier
 
 	var wheel_angle = drifting_direction * deg_to_rad(max_steering_speed) * steer_wheel_angle_multiplier
-	front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
-	front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
+	if front_right_wheel and front_left_wheel:
+		front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
+		front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
 	
 	#mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
 	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
@@ -222,7 +230,7 @@ func calculate_drifting_turn_speed(input: int) -> float:
 var drifting_direction: int
 func _on_drifting_entered() -> void:
 	drifting_direction = sign(steer_input)
-	animation_tree.set(&"parameters/hop/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	car_visual.trigger_hop()
 
 
 func _on_drifting_physics_processing(delta: float) -> void:

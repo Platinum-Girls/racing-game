@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dvs4hwsxhauar"]
+
+[resource]
+resource_name = "BlorbBase"
+specular_mode = 2
+albedo_color = Color(0, 0.72, 0.39600015, 1)
+emission_enabled = true
+stencil_flags = 2
+stencil_outline_thickness = 0.02

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bkfdb0ngverj8"]
 
-[ext_resource type="PackedScene" uid="uid://cbvqyygbmd6q4" path="res://game/features/car/car.tscn" id="1_gieot"]
+[ext_resource type="PackedScene" uid="uid://cbvqyygbmd6q4" path="res://game/gameplay/car/car.tscn" id="1_gieot"]
 [ext_resource type="Script" uid="uid://dqk8d5tvee45m" path="res://game/gameplay/input/player_input_provider.gd" id="2_4ff6f"]
-[ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/features/car/basic_camera.gd" id="2_ashi6"]
+[ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/gameplay/car/basic_camera.gd" id="2_ashi6"]
 [ext_resource type="PackedScene" uid="uid://cn3s68gt52ayn" path="res://road2.glb" id="5_7xj4p"]
 [ext_resource type="Material" uid="uid://c1a8pc1ml2p6" path="res://game/debugging/debug_material.tres" id="6_7xj4p"]
 [ext_resource type="PackedScene" uid="uid://d1ewx6epljpwq" path="res://test_map.glb" id="6_no4cj"]
@@ -80,10 +80,10 @@ shadow_enabled = true
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
 
-[node name="Ground" parent="road2" index="2" unique_id=1925602321]
+[node name="Ground" parent="road2" index="2" unique_id=635310388]
 material_override = ExtResource("6_7xj4p")
 
-[node name="RoadCollision" parent="road2" index="3" unique_id=2037946801]
+[node name="RoadCollision" parent="road2" index="3" unique_id=1742911346]
 visibility_range_begin = 10000.0
 visibility_range_end = 0.1
 
