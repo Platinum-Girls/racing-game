@@ -69,6 +69,20 @@ _subresources={
 "use_external/fallback_path": "res://game/features/cars/spaceship/assets/VehiclesOutline.tres",
 "use_external/path": "uid://byy7674jmqipe"
 }
+},
+"nodes": {
+"PATH:Spaceship/Bottom_Floop1": {
+"import/skip_import": true
+},
+"PATH:Spaceship/Bottom_Floop2": {
+"import/skip_import": true
+},
+"PATH:Spaceship/FloopOutline": {
+"import/skip_import": true
+},
+"PATH:Spaceship/FloopOutline1": {
+"import/skip_import": true
+}
 }
 }
 fbx/importer=0

@@ -2,6 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://b60meyl8pyipy" path="res://game/features/cars/car_visual.tscn" id="1_sguv0"]
 [ext_resource type="PackedScene" uid="uid://btdrv2xukf1q3" path="res://game/features/cars/spaceship/assets/spaceship.fbx" id="2_8ub0k"]
+[ext_resource type="Material" uid="uid://b05mi50iyd735" path="res://game/features/cars/spaceship/assets/DetailedHiglight.tres" id="3_txm4o"]
+[ext_resource type="ArrayMesh" uid="uid://d0rn37hkju4x1" path="res://game/features/cars/spaceship/assets/floop.res" id="4_n12dl"]
+
+[sub_resource type="Curve" id="Curve_txm4o"]
+_data = [Vector2(0, 0.01), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_txm4o"]
 animation = &"hop"
@@ -118,9 +124,25 @@ _data = {
 speed_smoothing = 8.0
 
 [node name="spaceship" parent="." index="0" unique_id=1252734120 instance=ExtResource("2_8ub0k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4850237, -1.3010132, 0.09991041)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4850237, -0.9814427, 0.09991041)
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="1" unique_id=607950717]
+[node name="CPUParticles3D" type="CPUParticles3D" parent="." index="1" unique_id=1858476733]
+transform = Transform3D(0.9999776, -0.006553128, 0.0014506351, -0.0014261566, 0.003736312, 0.99999213, -0.006558499, -0.9999716, 0.0037268766, 0, 0.5582764, 0)
+material_override = ExtResource("3_txm4o")
+amount = 3
+lifetime = 1.17
+local_coords = true
+mesh = ExtResource("4_n12dl")
+direction = Vector3(0, 0, -1)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.8
+initial_velocity_max = 0.8
+linear_accel_min = -0.4
+linear_accel_max = -0.4
+scale_amount_curve = SubResource("Curve_txm4o")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=607950717]
 deterministic = false
 tree_root = SubResource("AnimationNodeBlendTree_n12dl")
 anim_player = NodePath("../AnimationPlayer")
@@ -129,5 +151,5 @@ parameters/hop_trigger/active = false
 parameters/hop_trigger/internal_active = false
 parameters/hop_trigger/request = 0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2" unique_id=1225511894]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3" unique_id=1225511894]
 libraries/ = SubResource("AnimationLibrary_txm4o")
