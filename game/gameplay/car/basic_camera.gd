@@ -25,4 +25,4 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	global_position = global_position.lerp(target.global_position, delta * 18)
-	global_basis = global_basis.slerp(target.global_basis, delta * 12)
+	global_basis = global_basis.slerp(target.global_basis.orthonormalized(), delta * 12)

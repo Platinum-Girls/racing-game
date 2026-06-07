@@ -19,6 +19,7 @@ class_name CarBase extends CharacterBody3D
 @export_custom(0, "suffix:deg/10/s²") var steer_deceleration := 0.4
 @export var steer_wheel_angle_multiplier := 1.2
 @export var steer_mesh_angle_multiplier := 1.2
+@export var steer_mesh_roll_multiplier := 14
 
 @export_group("Engine")
 @export_custom(0, "suffix:m/s²") var engine_power: float = 6
@@ -40,7 +41,7 @@ class_name CarBase extends CharacterBody3D
 
 @onready var camera_container: Node3D = $CameraContainer
 @onready var state_chart: StateChart = $"Car States"
-@onready var car_visual: CarVisual = $CarMesh
+@onready var car_visual: CarVisual = $Spaceship
 
 const STICK_TO_LOOP_THRESHOLD = 16
 
@@ -50,7 +51,7 @@ var current_steer_direction: float
 var steer_input: float
 
 static func clamp01(number: float) -> float:
-	return clampf(number, 0.0, 1.0)
+	return clampf(abs(number), 0.0, 1.0) * sign(number)
 
 func _physics_process(delta: float) -> void:
 	move_and_slide()
@@ -161,7 +162,7 @@ func steering_visual_feedback(delta: float) -> void:
 		front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
 		front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
 	
-	mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
+	mesh.rotation.z = lerp_angle(mesh.rotation.z, current_steer_direction*steer_mesh_roll_multiplier, delta * 20)
 	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
 
 
@@ -181,8 +182,10 @@ func _on_grounded_processing(_delta: float) -> void:
 		blend = clamp01(fwd_vel / 15.0)
 	else: # reversing
 		blend = clamp01(fwd_vel / max_speed_reverse)
+
 	
-	car_visual.set_speed_blend(pow(blend, 2))
+	print(fwd_vel)
+	car_visual.set_speed_blend(pow(blend, 2) * sign(blend))
 	pass
 
 var air_counter = 0
@@ -217,7 +220,7 @@ func drifting_visual_feedback(delta: float) -> void:
 		front_right_wheel.rotation.y = lerp_angle(front_right_wheel.rotation.y, wheel_angle, delta*4)
 		front_left_wheel.rotation.y = lerp_angle(front_left_wheel.rotation.y, wheel_angle, delta*4)
 	
-	#mesh.rotation.z = lerp_angle(mesh.rotation.z, -current_steer_direction*2, delta * 20)
+	mesh.rotation.z = lerp_angle(mesh.rotation.z, current_steer_direction*steer_mesh_roll_multiplier, delta * 20)
 	mesh.rotation.y = lerp_angle(mesh.rotation.y, mesh_yaw, delta*4)
 
 func calculate_drifting_turn_speed(input: int) -> float:

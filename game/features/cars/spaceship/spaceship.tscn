@@ -2,54 +2,132 @@
 
 [ext_resource type="PackedScene" uid="uid://b60meyl8pyipy" path="res://game/features/cars/car_visual.tscn" id="1_sguv0"]
 [ext_resource type="PackedScene" uid="uid://btdrv2xukf1q3" path="res://game/features/cars/spaceship/assets/spaceship.fbx" id="2_8ub0k"]
-[ext_resource type="AnimationLibrary" uid="uid://bk6j0acn66icv" path="res://game/features/cars/spaceship/spaceship_anims.res" id="3_va7qp"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2pmk8"]
-animation = &"spaceship/hop"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_txm4o"]
+animation = &"hop"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fhq7n"]
-animation = &"spaceship/accelerating"
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_8ub0k"]
 
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_fhq7n"]
-filter_enabled = true
-filters = ["../Mesh/Car:position:y"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8ub0k"]
+animation = &"reversing"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q3634"]
-animation = &"spaceship/idle"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_va7qp"]
+animation = &"accelerating"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7q3qb"]
-animation = &"spaceship/reversing"
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_8ub0k"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_8ub0k")
+blend_point_0/pos = -0.7
+blend_point_1/node = SubResource("AnimationNodeAnimation_va7qp")
+blend_point_1/pos = 0.7
 
-[sub_resource type="AnimationNodeBlend3" id="AnimationNodeBlend3_7q3qb"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_n12dl"]
+graph_offset = Vector2(-192.52228, 123.91729)
+nodes/output/position = Vector2(525, 150)
+nodes/speed_blend/node = SubResource("AnimationNodeBlendSpace1D_8ub0k")
+nodes/speed_blend/position = Vector2(-200, 150)
+nodes/hop_trigger/node = SubResource("AnimationNodeOneShot_8ub0k")
+nodes/hop_trigger/position = Vector2(275, 75)
+nodes/hop/node = SubResource("AnimationNodeAnimation_txm4o")
+nodes/hop/position = Vector2(25, 300)
+node_connections = [&"output", 0, &"hop_trigger", &"hop_trigger", 0, &"speed_blend", &"hop_trigger", 1, &"hop"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_8ub0k"]
-graph_offset = Vector2(-662.4381, 453.1156)
-nodes/output/position = Vector2(580, 900)
-nodes/accelerating/node = SubResource("AnimationNodeAnimation_fhq7n")
-nodes/accelerating/position = Vector2(-220, 740)
-nodes/speed_blend/node = SubResource("AnimationNodeBlend3_7q3qb")
-nodes/speed_blend/position = Vector2(100, 940)
-nodes/idle/node = SubResource("AnimationNodeAnimation_q3634")
-nodes/idle/position = Vector2(-140, 1000)
-nodes/hop/node = SubResource("AnimationNodeOneShot_fhq7n")
-nodes/hop/position = Vector2(340, 900)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_2pmk8")
-nodes/Animation/position = Vector2(-140, 480)
-nodes/reversing/node = SubResource("AnimationNodeAnimation_7q3qb")
-nodes/reversing/position = Vector2(-140, 1260)
-node_connections = [&"output", 0, &"hop", &"speed_blend", 0, &"reversing", &"speed_blend", 1, &"idle", &"speed_blend", 2, &"accelerating", &"hop", 0, &"speed_blend", &"hop", 1, &"Animation"]
+[sub_resource type="Animation" id="Animation_8ub0k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation_degrees:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_va7qp"]
+resource_name = "accelerating"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation_degrees:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-12.5]
+}
+
+[sub_resource type="Animation" id="Animation_bhnoa"]
+resource_name = "hop"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668),
+"transitions": PackedFloat32Array(0.7, 1.3195078, 0.7),
+"update": 0,
+"values": [0.0, 0.415, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_txm4o"]
+resource_name = "reversing"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation_degrees:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [12.5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_txm4o"]
+_data = {
+&"RESET": SubResource("Animation_8ub0k"),
+&"accelerating": SubResource("Animation_va7qp"),
+&"hop": SubResource("Animation_bhnoa"),
+&"reversing": SubResource("Animation_txm4o")
+}
 
 [node name="Spaceship" unique_id=583529944 instance=ExtResource("1_sguv0")]
+speed_smoothing = 8.0
 
 [node name="spaceship" parent="." index="0" unique_id=1252734120 instance=ExtResource("2_8ub0k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4850237, -1.3010132, 0.09991041)
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="1" unique_id=607950717]
-tree_root = SubResource("AnimationNodeBlendTree_8ub0k")
+deterministic = false
+tree_root = SubResource("AnimationNodeBlendTree_n12dl")
 anim_player = NodePath("../AnimationPlayer")
-parameters/speed_blend/blend_amount = 1.0
-parameters/hop/active = false
-parameters/hop/internal_active = false
-parameters/hop/request = 0
+parameters/speed_blend/blend_position = 0.0
+parameters/hop_trigger/active = false
+parameters/hop_trigger/internal_active = false
+parameters/hop_trigger/request = 0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2" unique_id=993681226]
-libraries/spaceship = ExtResource("3_va7qp")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2" unique_id=1225511894]
+libraries/ = SubResource("AnimationLibrary_txm4o")
