@@ -17,7 +17,7 @@ class_name CarBase extends CharacterBody3D
 
 @export_group("Steering")
 @export_custom(0, "suffix:deg") var max_tire_angle: float = 0.75
-@export_custom(0, "suffix:deg/s²") var  wheel_turn_acceleration: float = .01
+@export_custom(0, "suffix:deg/s²") var  wheel_turn_acceleration: float = .001
 @export var air_steer_control := 0.35
 
 @export_group("Engine")
@@ -46,7 +46,11 @@ const drift_camera_decay_rate: float     = 0.1
 var visual: VehicleVisual
 var character: Node3D
 
+const FRICTION_STOP_THRESHOLD: float = 0.1
 const STICK_TO_LOOP_THRESHOLD: float = 16
+##Weighting to velocity so turn rate is proportional to velocity. Set 1 one for rotation to snap to heaidng direction.
+const VELO_Z_TURN_WEIGHT: float = .2
+
 
 # Car state properties
 var current_steer_direction: float
@@ -97,10 +101,9 @@ func apply_acceleration(delta: float) -> void:
 	velocity += acceleration * delta
 	
 
-
 func apply_friction(delta: float) -> void:
 	var xz_vel: Vector3 = velocity.slide(up_direction)
-	if xz_vel.length() < 0.1 and is_zero_approx(input_provider.get_acceleration_axis()):
+	if xz_vel.length() < FRICTION_STOP_THRESHOLD and is_zero_approx(input_provider.get_acceleration_axis()):
 		velocity = up_direction * velocity.dot(up_direction)
 		return
 		
@@ -125,7 +128,6 @@ func calculate_steer_direction(delta: float, multiplier: float  = 1, turn_angle:
 	wheel_turn_speed = move_toward(wheel_turn_speed, deg_to_rad(turn_angle), deg_to_rad(wheel_turn_acceleration) * delta)
 	current_steer_direction = move_toward(current_steer_direction, target_steer_direction, wheel_turn_speed)
 
-const VELO_Z_TURN_WEIGHT: float = .8#weighting to velocity so turn rate is proportional to velocity
 func perform_steering() -> void:
 	var new_heading: Vector3 = velocity.rotated(basis.y, current_steer_direction).normalized()
 	basis = basis.slerp(basis.rotated(up_direction, current_steer_direction), MathUtils.clamp01(velocity.slide(up_direction).length() * VELO_Z_TURN_WEIGHT)).orthonormalized()
@@ -200,7 +202,7 @@ func _on_drifting_physics_processing(delta: float) -> void:
 	velocity += -transform.basis.z * engine_power * delta
 	
 	var turn_speed: float = calculate_drifting_turn_speed(sign(steer_input))
-	current_steer_direction = drifting_direction * deg_to_rad(turn_speed)
+	current_steer_direction = drifting_direction * deg_to_rad(turn_speed) #force set directly to drifting turn speed
 	perform_steering()
 #	print_debug("---------------------")
 #	print_debug(velocity)
