@@ -1,7 +1,7 @@
 class_name VehicleVisual extends Node3D
 
-var animation_tree: AnimationTree
-
+@export var animation_tree: AnimationTree
+@export var character_root: Marker3D
 
 @export var speed_smoothing: float = 1
 
@@ -10,6 +10,11 @@ var animation_tree: AnimationTree
 @export var mesh_yaw_multiplier := 1.0
 @export var mesh_roll_multiplier := 14.0
 
+@export var tire_rot_speed: float = 20
+@export var mesh_yaw_speed: float = 20
+@export var mesh_roll_speed: float = 20
+
+
 ## [method set_speed_based_yaw] uses this value to divide speed into a [0, 1] range, 
 ## which is then passed to [method set_target_yaw_rot] to drive mesh yaw rotation.[br]
 ## This value defines the speed the vehicle needs to achieve in order to be able to 
@@ -17,10 +22,6 @@ var animation_tree: AnimationTree
 @export var max_speed_yaw := 20
 
 @export var rotating_wheels: Array[Node3D]
-
-
-@onready var character_root: Marker3D = $CharacterRoot
-
 
 var target_roll_rot: float
 var target_yaw_rot: float
@@ -31,17 +32,16 @@ var speed_factor := 0.0
 
 func _ready() -> void:
 	print_tree_pretty()
-	animation_tree = $AnimationTree
 	
 func _process(delta: float) -> void:
-	speed_factor = lerpf(speed_factor, target_speed_factor, delta * speed_smoothing)
+	speed_factor = lerpf(speed_factor, target_speed_factor, MathUtils.lerp_delta_decay(speed_smoothing, delta))
 	animation_tree.set(&"parameters/speed_blend/blend_position", speed_factor)
 	
-	rotation.y = lerp_angle(rotation.y, target_yaw_rot, delta * 4)
-	rotation.z = lerp_angle(rotation.z, target_roll_rot, delta * 20)
+	rotation.y = rotate_toward(rotation.y, target_yaw_rot, mesh_yaw_speed * delta)
+	rotation.z = rotate_toward(rotation.z, target_roll_rot, mesh_roll_speed * delta)
 	
 	for wheel in rotating_wheels:
-		wheel.rotation.y = lerp_angle(wheel.rotation.y, target_wheel_rot, delta * 4)
+		wheel.rotation.y = rotate_toward(wheel.rotation.y, target_wheel_rot, tire_rot_speed * delta)
 
 
 func set_speed_based_yaw(intended_yaw: float, speed: float) -> void:

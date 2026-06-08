@@ -111,10 +111,10 @@ shadow_enabled = true
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
 
-[node name="Ground" parent="road2" index="2" unique_id=1309492169]
+[node name="Ground" parent="road2" index="2" unique_id=1635225044]
 material_override = ExtResource("6_7xj4p")
 
-[node name="RoadCollision" parent="road2" index="3" unique_id=575807310]
+[node name="RoadCollision" parent="road2" index="3" unique_id=1522294494]
 visibility_range_begin = 10000.0
 visibility_range_end = 0.1
 

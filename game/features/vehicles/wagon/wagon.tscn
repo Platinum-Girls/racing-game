@@ -215,7 +215,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0.03333333, 0.16666667, 0.3),
 "transitions": PackedFloat32Array(0.7, 1.2557172, 0.7),
 "update": 0,
-"values": [2.278, 2.4779999999999998, 2.278]
+"values": [2.278, 2.478, 2.278]
 }
 
 [sub_resource type="Animation" id="Animation_txm4o"]
@@ -278,7 +278,9 @@ _data = {
 &"reversing": SubResource("Animation_txm4o")
 }
 
-[node name="Vehicle Visual" unique_id=1261609396 node_paths=PackedStringArray("rotating_wheels") instance=ExtResource("1_1e1jv")]
+[node name="Vehicle Visual" unique_id=1261609396 node_paths=PackedStringArray("animation_tree", "character_root", "rotating_wheels") instance=ExtResource("1_1e1jv")]
+animation_tree = NodePath("AnimationTree")
+character_root = NodePath("CharacterRoot")
 wheel_angle_multiplier = -12.0
 rotating_wheels = [NodePath("wagon/WagonAll/Wheel1"), NodePath("wagon/WagonAll/Wheel3")]
 
@@ -288,33 +290,37 @@ transform = Transform3D(-1, 0, -8.742276e-08, -1.7989613e-08, 0.9785988, 0.20577
 [node name="wagon" parent="." index="1" unique_id=751976450 instance=ExtResource("2_dwr5g")]
 transform = Transform3D(-0.75, 0, -6.556708e-08, 0, 0.75, 0, 6.556708e-08, 0, -0.75, 1.6794473, -0.486835, 0.1841518)
 
-[node name="Wheel1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="3" unique_id=2116277515]
+[node name="Wheel1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="3" unique_id=1243563675]
+transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 1.1566625, 1.2628714, 1.0493356)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
-[node name="Wheel2" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="4" unique_id=506007057]
+[node name="Wheel2" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="4" unique_id=1778383202]
+transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 1.1566625, 1.2628714, -0.5708153)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
-[node name="Wheel3" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="5" unique_id=55580854]
+[node name="Wheel3" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="5" unique_id=1490194587]
+transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 3.2599466, 1.2628714, 1.0493356)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
-[node name="Wheel4" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="6" unique_id=1206413539]
+[node name="Wheel4" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="6" unique_id=50367851]
+transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 3.2599466, 1.2628714, -0.5708153)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
-[node name="Handle1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="8" unique_id=519110222]
+[node name="Handle1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="8" unique_id=647054174]
 material_override = ExtResource("3_n83nq")
 
-[node name="Pillow" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="9" unique_id=1126548954]
+[node name="Pillow" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="9" unique_id=751597723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9687597, 2.299, -0.816795)
 
-[node name="Pillow1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="10" unique_id=1816031547]
+[node name="Pillow1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="10" unique_id=498346703]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6649122, 2.278, -0.48775333)
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=7713797]
