@@ -281,7 +281,6 @@ _data = {
 [node name="Vehicle Visual" unique_id=1261609396 node_paths=PackedStringArray("animation_tree", "character_root", "rotating_wheels") instance=ExtResource("1_1e1jv")]
 animation_tree = NodePath("AnimationTree")
 character_root = NodePath("CharacterRoot")
-wheel_angle_multiplier = -12.0
 rotating_wheels = [NodePath("wagon/WagonAll/Wheel1"), NodePath("wagon/WagonAll/Wheel3")]
 
 [node name="CharacterRoot" parent="." index="0" unique_id=1222562302]
@@ -291,25 +290,25 @@ transform = Transform3D(-1, 0, -8.742276e-08, -1.7989613e-08, 0.9785988, 0.20577
 transform = Transform3D(-0.75, 0, -6.556708e-08, 0, 0.75, 0, 6.556708e-08, 0, -0.75, 1.6794473, -0.486835, 0.1841518)
 
 [node name="Wheel1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="3" unique_id=1243563675]
-transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 1.1566625, 1.2628714, 1.0493356)
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 1.1566625, 1.2628714, 1.0493356)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
 [node name="Wheel2" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="4" unique_id=1778383202]
-transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 1.1566625, 1.2628714, -0.5708153)
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 1.1566625, 1.2628714, -0.5708153)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
 [node name="Wheel3" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="5" unique_id=1490194587]
-transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 3.2599466, 1.2628714, 1.0493356)
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 3.2599466, 1.2628714, 1.0493356)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)
 
 [node name="Wheel4" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 458475064) index="6" unique_id=50367851]
-transform = Transform3D(1, 0, 0, 0, -0.9452597, 0.32631898, 0, -0.32631898, -0.9452597, 3.2599466, 1.2628714, -0.5708153)
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 3.2599466, 1.2628714, -0.5708153)
 material_override = ExtResource("3_4c60f")
 script = ExtResource("4_76ou2")
 rotate_axis = Vector3(1, 0, 0)

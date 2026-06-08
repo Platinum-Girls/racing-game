@@ -3,14 +3,14 @@ class_name VehicleVisual extends Node3D
 @export var animation_tree: AnimationTree
 @export var character_root: Marker3D
 
-@export var speed_smoothing: float = 1
+@export var speed_smoothing: float = 0.1
 
 @export var wheel_angle_multiplier := 12.0
 @export var drifting_yaw_multiplier := 5.0
 @export var mesh_yaw_multiplier := 1.0
 @export var mesh_roll_multiplier := 14.0
 
-@export var tire_rot_speed: float = 20
+@export var tire_rot_speed: float = 2
 @export var mesh_yaw_speed: float = 20
 @export var mesh_roll_speed: float = 20
 

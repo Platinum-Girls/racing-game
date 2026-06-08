@@ -125,7 +125,7 @@ func calculate_steer_direction(delta: float, multiplier: float  = 1, turn_angle:
 	wheel_turn_speed = move_toward(wheel_turn_speed, deg_to_rad(turn_angle), deg_to_rad(wheel_turn_acceleration) * delta)
 	current_steer_direction = move_toward(current_steer_direction, target_steer_direction, wheel_turn_speed)
 
-const VELO_Z_TURN_WEIGHT: float = 1#weighting to velocity so turn rate is proportional to velocity
+const VELO_Z_TURN_WEIGHT: float = .8#weighting to velocity so turn rate is proportional to velocity
 func perform_steering() -> void:
 	var new_heading: Vector3 = velocity.rotated(basis.y, current_steer_direction).normalized()
 	basis = basis.slerp(basis.rotated(up_direction, current_steer_direction), MathUtils.clamp01(velocity.slide(up_direction).length() * VELO_Z_TURN_WEIGHT)).orthonormalized()

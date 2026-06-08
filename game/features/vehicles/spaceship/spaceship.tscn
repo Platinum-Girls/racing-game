@@ -160,7 +160,6 @@ base_rotate_speed_multiplier = 999.0
 rotate_speed_change_dir_multiplier = 10.0
 animation_tree = NodePath("AnimationTree")
 character_root = NodePath("CharacterRoot")
-speed_smoothing = 8.0
 mesh_roll_multiplier = 16.0
 
 [node name="Pivot" type="Node3D" parent="." index="0" unique_id=1252213576]
