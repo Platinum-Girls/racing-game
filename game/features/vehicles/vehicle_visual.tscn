@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bsjy3e21ay81g" path="res://game/features/vehicles/vehicle_visual.gd" id="1_roe7i"]
 
-[node name="Vehicle Visual" type="Node3D" unique_id=1261609396]
+[node name="Vehicle Visual" type="Node3D" unique_id=633672944]
 script = ExtResource("1_roe7i")
 metadata/_custom_type_script = "uid://bsjy3e21ay81g"
 

@@ -39,7 +39,9 @@ class_name CarBase extends CharacterBody3D
 
 @onready var camera_container: Node3D = $CameraContainer
 @onready var state_chart: StateChart = $"Car States"
-@onready var visual: VehicleVisual = $Spaceship
+
+var visual: VehicleVisual
+var character: Node3D
 
 const STICK_TO_LOOP_THRESHOLD = 16
 
@@ -52,12 +54,14 @@ static func clamp01(number: float) -> float:
 	return clampf(abs(number), 0.0, 1.0) * sign(number)
 
 func _ready() -> void:
-	setup_visual()
+	if mesh_scene and character_scene:
+		setup_visual()
 
 func setup_visual() -> void:
 	visual = mesh_scene.instantiate()
+	character = character_scene.instantiate()
 	add_child(visual)
-	visual.character_root.add_child(character_scene.instantiate())
+	visual.character_root.add_child(character)
 
 
 func _physics_process(delta: float) -> void:
@@ -110,7 +114,7 @@ func apply_friction(delta: float) -> void:
 
 
 func calculate_steer_direction() -> void:
-	var target_steer_direction := steer_input * deg_to_rad(max_steering_speed/10.0)
+	var target_steer_direction := steer_input
 	if input_provider.is_braking(): 
 		target_steer_direction = -target_steer_direction
 	
@@ -130,8 +134,8 @@ func calculate_steer_direction() -> void:
 		current_steer_direction = lerp(current_steer_direction, 0.0, steer_deceleration)
 	
 
-func perform_steering(multiplier: float = 1.0) -> void:
-	var steer = current_steer_direction * multiplier
+func perform_steering(multiplier: float = 1.0, turn_speed: float = max_steering_speed) -> void:
+	var steer = current_steer_direction * deg_to_rad(turn_speed/10.0) * multiplier
 
 	var new_basis = velocity.rotated(basis.y, steer).normalized()
 	
@@ -174,7 +178,7 @@ func _on_grounded_processing(_delta: float) -> void:
 	else: # reversing
 		blend = clamp01(fwd_vel / max_speed_reverse)
 
-	visual.set_speed_blend(pow(blend, 2) * sign(blend))
+	visual.set_speed_blend(blend)
 	pass
 
 #endregion
@@ -206,8 +210,8 @@ func _on_drifting_physics_processing(delta: float) -> void:
 	velocity += -transform.basis.z * engine_power * delta
 	
 	var turn_speed = calculate_drifting_turn_speed(sign(steer_input))
-	current_steer_direction = drifting_direction * deg_to_rad(turn_speed/10.0)
-	perform_steering()
+	current_steer_direction = drifting_direction
+	perform_steering(1.0, turn_speed)
 	
 	# outward drifting
 	if sign(steer_input) == -drifting_direction:
@@ -268,7 +272,7 @@ func _on_air_physics_processing(delta: float) -> void:
 func _on_air_processing(_delta: float) -> void:
 	visual.set_target_roll_rot(current_steer_direction)
 	visual.set_speed_based_yaw(steer_input * deg_to_rad(max_steering_speed), velocity.dot(-basis.z))
-	visual.set_wheel_rot(steer_input * deg_to_rad(max_steering_speed))
+	visual.set_wheel_rot(steer_input)
 	
 
 

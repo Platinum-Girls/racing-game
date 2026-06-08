@@ -1,0 +1,28 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://52iboiqnld27"]
+
+[ext_resource type="Shader" uid="uid://ceffp1ggc86mr" path="res://core/effects/shaders/toon_shader.gdshader" id="1_mh8p4"]
+
+[resource]
+resource_name = "WagonMaterial"
+render_priority = 0
+shader = ExtResource("1_mh8p4")
+shader_parameter/albedo_color = Color(0.81960785, 0.33333334, 0.34117648, 1)
+shader_parameter/use_stepped = true
+shader_parameter/steps = 3.0
+shader_parameter/step_smoothness = 0.10000000149012
+shader_parameter/shadow_tint = Color(0, 0, 0, 1)
+shader_parameter/shadow_tint_amount = 0.4
+shader_parameter/specular = 0.0
+shader_parameter/normal_strength = 0.0
+shader_parameter/use_rim = false
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/rim_amount = 2.0
+shader_parameter/rim_smoothness = 0.2
+shader_parameter/rim_mask_shadow = 1.0
+shader_parameter/rim_blend = 1.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_uv_mode = 2
+shader_parameter/pattern_tiling = 32.0
+shader_parameter/pattern_amount = 0.5
+shader_parameter/pattern_smoothness = 0.5
+shader_parameter/pattern_blend = 0.2

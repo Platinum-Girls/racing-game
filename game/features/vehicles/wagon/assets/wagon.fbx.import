@@ -1,0 +1,97 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cx4svpor82ksb"
+path="res://.godot/imported/wagon.fbx-954f0f9e60c91486838fe8e7651361cc.scn"
+
+[deps]
+
+source_file="res://game/features/vehicles/wagon/assets/wagon.fbx"
+dest_files=["res://.godot/imported/wagon.fbx-954f0f9e60c91486838fe8e7651361cc.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=true
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"PillowShader": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/vehicles/wagon/materials/PillowShader.tres",
+"use_external/path": "uid://dhfwb2shvogbo"
+},
+"ThinnerOutline": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/vehicles/wagon/materials/ThinnerOutline.tres",
+"use_external/path": "uid://ef8j3ncjaf4m"
+},
+"VehiclesOutline": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/vehicles/wagon/materials/VehiclesOutline.tres",
+"use_external/path": "uid://daivpj04tf4sn"
+},
+"WagonDetails": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/vehicles/wagon/materials/Wheels.tres",
+"use_external/path": "uid://dleibg5eb8n6w"
+},
+"WagonMaterial": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/vehicles/wagon/materials/WagonMaterial.tres",
+"use_external/path": "uid://52iboiqnld27"
+},
+"lambert1": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/features/vehicles/wagon/materials/Wheels.tres",
+"use_external/path": "uid://dleibg5eb8n6w"
+}
+},
+"nodes": {
+"PATH:WagonAll/OutlineDet2": {
+"import/skip_import": true
+},
+"PATH:WagonAll/OutlineDet3": {
+"import/skip_import": true
+},
+"PATH:WagonAll/WheelOut2": {
+"import/skip_import": true
+},
+"PATH:WagonAll/WheelOut3": {
+"import/skip_import": true
+},
+"PATH:WagonAll/WheelOut4": {
+"import/skip_import": true
+},
+"PATH:WagonAll/WheelOut5": {
+"import/skip_import": true
+}
+}
+}
+fbx/importer=0
+fbx/allow_geometry_helper_nodes=false
+fbx/embedded_image_handling=1
+fbx/naming_version=2

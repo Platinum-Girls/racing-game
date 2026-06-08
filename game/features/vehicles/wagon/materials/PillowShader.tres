@@ -1,0 +1,36 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dhfwb2shvogbo"]
+
+[ext_resource type="Shader" uid="uid://ceffp1ggc86mr" path="res://core/effects/shaders/toon_shader.gdshader" id="1_d0wyb"]
+[ext_resource type="Shader" uid="uid://byiq1jbh1uuqq" path="res://core/effects/shaders/outline_shader.gdshader" id="1_uf2eb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uf2eb"]
+render_priority = 0
+shader = ExtResource("1_uf2eb")
+shader_parameter/weight = 0.02
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[resource]
+resource_name = "PillowShader"
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_uf2eb")
+shader = ExtResource("1_d0wyb")
+shader_parameter/albedo_color = Color(0.9411765, 0.5254902, 0.6666667, 1)
+shader_parameter/use_stepped = true
+shader_parameter/steps = 3.0
+shader_parameter/step_smoothness = 0.0
+shader_parameter/shadow_tint = Color(0, 0, 0, 1)
+shader_parameter/shadow_tint_amount = 0.4
+shader_parameter/specular = 0.0
+shader_parameter/normal_strength = 0.0
+shader_parameter/use_rim = false
+shader_parameter/rim_color = Color(2.2241454, 2.2241454, 2.2241454, 1)
+shader_parameter/rim_amount = 2.0
+shader_parameter/rim_smoothness = 0.05
+shader_parameter/rim_mask_shadow = 1.0
+shader_parameter/rim_blend = 0.45000000670554
+shader_parameter/use_pattern = true
+shader_parameter/pattern_uv_mode = 2
+shader_parameter/pattern_tiling = 32.0
+shader_parameter/pattern_amount = 0.5
+shader_parameter/pattern_smoothness = 0.5
+shader_parameter/pattern_blend = 0.2

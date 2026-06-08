@@ -60,7 +60,7 @@ func set_target_yaw_rot(yaw: float) -> void:
 
 
 func set_target_roll_rot(roll: float) -> void:
-	target_roll_rot = roll * mesh_roll_multiplier
+	target_roll_rot = deg_to_rad(roll * mesh_roll_multiplier)
 
 func set_wheel_rot(yaw: float) -> void:
 	target_wheel_rot = yaw * wheel_angle_multiplier

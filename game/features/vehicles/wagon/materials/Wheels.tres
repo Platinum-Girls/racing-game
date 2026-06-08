@@ -1,0 +1,39 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dleibg5eb8n6w"]
+
+[ext_resource type="Shader" uid="uid://ceffp1ggc86mr" path="res://core/effects/shaders/toon_shader.gdshader" id="1_c4cki"]
+[ext_resource type="Shader" uid="uid://byiq1jbh1uuqq" path="res://core/effects/shaders/outline_shader.gdshader" id="1_t4luj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c2di6"]
+render_priority = 0
+shader = ExtResource("1_t4luj")
+shader_parameter/weight = 0.03
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c4cki"]
+
+[resource]
+resource_name = "lambert1"
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_c2di6")
+shader = ExtResource("1_c4cki")
+shader_parameter/albedo_color = Color(0.3403393, 0.34033933, 0.3403393, 1)
+shader_parameter/use_stepped = true
+shader_parameter/steps = 3.0
+shader_parameter/step_smoothness = 0.10000000149012
+shader_parameter/shadow_tint = Color(0, 0, 0, 1)
+shader_parameter/shadow_tint_amount = 0.4
+shader_parameter/specular = 0.10000000149012
+shader_parameter/normal_strength = 0.0
+shader_parameter/use_rim = false
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/rim_amount = 2.0
+shader_parameter/rim_smoothness = 0.2
+shader_parameter/rim_mask_shadow = 1.0
+shader_parameter/rim_blend = 1.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_texture = SubResource("NoiseTexture2D_c4cki")
+shader_parameter/pattern_uv_mode = 2
+shader_parameter/pattern_tiling = 51.025
+shader_parameter/pattern_amount = 0.5
+shader_parameter/pattern_smoothness = 0.5
+shader_parameter/pattern_blend = 0.2

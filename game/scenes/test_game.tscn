@@ -3,9 +3,37 @@
 [ext_resource type="PackedScene" uid="uid://cbvqyygbmd6q4" path="res://game/gameplay/car/car.tscn" id="1_gieot"]
 [ext_resource type="Script" uid="uid://dqk8d5tvee45m" path="res://game/gameplay/input/player_input_provider.gd" id="2_4ff6f"]
 [ext_resource type="Script" uid="uid://di18mxxeglbys" path="res://game/gameplay/car/basic_camera.gd" id="2_ashi6"]
+[ext_resource type="PackedScene" uid="uid://br7wwi3vqqscp" path="res://game/features/vehicles/spaceship/spaceship.tscn" id="3_no4cj"]
+[ext_resource type="PackedScene" uid="uid://byh7n2pi0tdrv" path="res://game/features/vehicles/wagon/wagon.tscn" id="3_tp64q"]
 [ext_resource type="PackedScene" uid="uid://cn3s68gt52ayn" path="res://road2.glb" id="5_7xj4p"]
 [ext_resource type="Material" uid="uid://c1a8pc1ml2p6" path="res://game/debugging/debug_material.tres" id="6_7xj4p"]
 [ext_resource type="PackedScene" uid="uid://d1ewx6epljpwq" path="res://test_map.glb" id="6_no4cj"]
+
+[sub_resource type="GDScript" id="GDScript_7xj4p"]
+resource_name = "VehicleSwitcher"
+script/source = "extends Node
+
+@onready var car: CarBase = $\"..\"
+@export var vehicles: Array[PackedScene]
+
+var current: int = 0
+
+func _ready() -> void:
+	switch()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&\"switch_vehicle\"):
+		switch()
+		car.setup_visual()
+		
+func switch() -> void:
+	current += 1
+	if current >= vehicles.size(): current = 0
+	
+	if car.visual: 
+		car.visual.queue_free()
+	car.mesh_scene = vehicles[current]
+"
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_26caj"]
 mie_eccentricity = 0.87
@@ -41,6 +69,10 @@ max_speed_reverse = 8.0
 [node name="PlayerInputProvider" type="Node" parent="Car" unique_id=281551392]
 script = ExtResource("2_4ff6f")
 metadata/_custom_type_script = "uid://dqk8d5tvee45m"
+
+[node name="Debug Vehicle Switcher" type="Node" parent="Car" unique_id=224869783]
+script = SubResource("GDScript_7xj4p")
+vehicles = Array[PackedScene]([ExtResource("3_tp64q"), ExtResource("3_no4cj")])
 
 [node name="Node3D" type="Node3D" parent="." unique_id=419274260 node_paths=PackedStringArray("target", "cameras")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -122.42819, 12.528982, 140.70082)
@@ -79,10 +111,10 @@ shadow_enabled = true
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
 
-[node name="Ground" parent="road2" index="2" unique_id=1095934754]
+[node name="Ground" parent="road2" index="2" unique_id=1309492169]
 material_override = ExtResource("6_7xj4p")
 
-[node name="RoadCollision" parent="road2" index="3" unique_id=2026999018]
+[node name="RoadCollision" parent="road2" index="3" unique_id=575807310]
 visibility_range_begin = 10000.0
 visibility_range_end = 0.1
 

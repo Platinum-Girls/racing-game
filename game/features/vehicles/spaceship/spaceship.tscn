@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cuid454babml0" path="res://game/features/vehicles/spaceship/spaceship_visual.gd" id="2_5kh28"]
 [ext_resource type="Script" uid="uid://cfj6rm8tisurt" path="res://game/gameplay/car/wheel_spin.gd" id="2_8ae60"]
 [ext_resource type="PackedScene" uid="uid://btdrv2xukf1q3" path="res://game/features/vehicles/spaceship/assets/spaceship.fbx" id="2_8ub0k"]
-[ext_resource type="Material" uid="uid://b05mi50iyd735" path="res://game/features/vehicles/spaceship/assets/DetailedHiglight.tres" id="3_txm4o"]
+[ext_resource type="Material" uid="uid://b05mi50iyd735" path="res://game/features/vehicles/spaceship/materials/DetailedHiglight.tres" id="3_txm4o"]
 [ext_resource type="ArrayMesh" uid="uid://cbu8rtie43t5l" path="res://game/features/vehicles/spaceship/assets/floop.res" id="4_n12dl"]
 [ext_resource type="PackedScene" uid="uid://ctjuo0us34223" path="res://game/features/characters/blorb/blorb.tscn" id="5_8ae60"]
 
@@ -23,11 +23,16 @@ animation = &"reversing"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_va7qp"]
 animation = &"accelerating"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qcr16"]
+animation = &"RESET"
+
 [sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_8ub0k"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_8ub0k")
 blend_point_0/pos = -0.7
 blend_point_1/node = SubResource("AnimationNodeAnimation_va7qp")
 blend_point_1/pos = 0.7
+blend_point_2/node = SubResource("AnimationNodeAnimation_qcr16")
+blend_point_2/pos = 0.0
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_n12dl"]
 graph_offset = Vector2(-667, 70)
@@ -151,10 +156,10 @@ _data = {
 script = ExtResource("2_5kh28")
 ufo_rotate_multiplier = 20
 speed_smoothing = 8.0
+mesh_roll_multiplier = 16.0
 
 [node name="Pivot" type="Node3D" parent="." index="0" unique_id=1252213576]
 script = ExtResource("2_8ae60")
-rotate_axis = null
 
 [node name="spaceship" parent="Pivot" index="0" unique_id=1252734120 instance=ExtResource("2_8ub0k")]
 transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 1.8898627, -0.5409709, 0.007965714)

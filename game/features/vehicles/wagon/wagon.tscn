@@ -1,0 +1,332 @@
+[gd_scene format=3 uid="uid://byh7n2pi0tdrv"]
+
+[ext_resource type="PackedScene" uid="uid://b60meyl8pyipy" path="res://game/features/vehicles/vehicle_visual.tscn" id="1_1e1jv"]
+[ext_resource type="PackedScene" uid="uid://cx4svpor82ksb" path="res://game/features/vehicles/wagon/assets/wagon.fbx" id="2_dwr5g"]
+[ext_resource type="Material" uid="uid://dleibg5eb8n6w" path="res://game/features/vehicles/wagon/materials/Wheels.tres" id="3_4c60f"]
+[ext_resource type="Material" uid="uid://bqm3ccbd437an" path="res://game/features/vehicles/wagon/materials/Handle.tres" id="3_n83nq"]
+[ext_resource type="Script" uid="uid://cfj6rm8tisurt" path="res://game/gameplay/car/wheel_spin.gd" id="4_76ou2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_txm4o"]
+animation = &"hop"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_8ub0k"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_76ou2"]
+animation = &"reversing"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ew7km"]
+animation = &"accelerating"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qcr16"]
+animation = &"RESET"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_8ub0k"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_76ou2")
+blend_point_0/pos = -0.7
+blend_point_1/node = SubResource("AnimationNodeAnimation_ew7km")
+blend_point_1/pos = 0.7
+blend_point_2/node = SubResource("AnimationNodeAnimation_qcr16")
+blend_point_2/pos = 0.0
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qcr16"]
+graph_offset = Vector2(-200, 0)
+nodes/output/position = Vector2(525, 150)
+nodes/speed_blend/node = SubResource("AnimationNodeBlendSpace1D_8ub0k")
+nodes/speed_blend/position = Vector2(-200, 150)
+nodes/hop_trigger/node = SubResource("AnimationNodeOneShot_8ub0k")
+nodes/hop_trigger/position = Vector2(275, 75)
+nodes/hop/node = SubResource("AnimationNodeAnimation_txm4o")
+nodes/hop/position = Vector2(25, 300)
+node_connections = [&"output", 0, &"hop_trigger", &"hop_trigger", 0, &"speed_blend", &"hop_trigger", 1, &"hop"]
+
+[sub_resource type="Animation" id="Animation_8ub0k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterRoot:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0.624]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("wagon/WagonAll/Wheel4:rotate_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("wagon/WagonAll/Wheel1:rotate_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("wagon/WagonAll/Wheel2:rotate_speed")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("wagon/WagonAll/Wheel3:rotate_speed")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_va7qp"]
+resource_name = "accelerating"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wagon/WagonAll/Wheel4:rotate_speed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [600.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wagon/WagonAll/Wheel1:rotate_speed")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [600.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("wagon/WagonAll/Wheel2:rotate_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [600.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("wagon/WagonAll/Wheel3:rotate_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [600.0]
+}
+
+[sub_resource type="Animation" id="Animation_bhnoa"]
+resource_name = "hop"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:y")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.26666668),
+"transitions": PackedFloat32Array(0.7, 1.3195078, 0.7),
+"update": 0,
+"values": [0.0, 0.415, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterRoot:position:y")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.03333333, 0.16666667, 0.3),
+"transitions": PackedFloat32Array(0.7, 1.3, 0.7),
+"update": 0,
+"values": [0.624, 0.9, 0.624]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("wagon/WagonAll/Pillow:position:y")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.06666667, 0.2, 0.33333334),
+"transitions": PackedFloat32Array(0.7, 1.3, 0.7),
+"update": 0,
+"values": [2.299, 2.5, 2.299]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("wagon/WagonAll/Pillow1:position:y")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.03333333, 0.16666667, 0.3),
+"transitions": PackedFloat32Array(0.7, 1.2557172, 0.7),
+"update": 0,
+"values": [2.278, 2.4779999999999998, 2.278]
+}
+
+[sub_resource type="Animation" id="Animation_txm4o"]
+resource_name = "reversing"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wagon/WagonAll/Wheel4:rotate_speed")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-180.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wagon/WagonAll/Wheel1:rotate_speed")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-180.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("wagon/WagonAll/Wheel2:rotate_speed")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-180.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("wagon/WagonAll/Wheel3:rotate_speed")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-180.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_76ou2"]
+_data = {
+&"RESET": SubResource("Animation_8ub0k"),
+&"accelerating": SubResource("Animation_va7qp"),
+&"hop": SubResource("Animation_bhnoa"),
+&"reversing": SubResource("Animation_txm4o")
+}
+
+[node name="Vehicle Visual" unique_id=1261609396 node_paths=PackedStringArray("rotating_wheels") instance=ExtResource("1_1e1jv")]
+wheel_angle_multiplier = -12.0
+rotating_wheels = [NodePath("wagon/WagonAll/Wheel1"), NodePath("wagon/WagonAll/Wheel3")]
+
+[node name="CharacterRoot" parent="." index="0" unique_id=1222562302]
+transform = Transform3D(-1, 0, -8.742276e-08, -1.7989613e-08, 0.9785988, 0.20577718, 8.5551825e-08, 0.20577718, -0.9785988, 0, 0.624, -0.042769954)
+
+[node name="wagon" parent="." index="1" unique_id=751976450 instance=ExtResource("2_dwr5g")]
+transform = Transform3D(-0.75, 0, -6.556708e-08, 0, 0.75, 0, 6.556708e-08, 0, -0.75, 1.6794473, -0.486835, 0.1841518)
+
+[node name="Wheel1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="3" unique_id=2116277515]
+material_override = ExtResource("3_4c60f")
+script = ExtResource("4_76ou2")
+rotate_axis = Vector3(1, 0, 0)
+
+[node name="Wheel2" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="4" unique_id=506007057]
+material_override = ExtResource("3_4c60f")
+script = ExtResource("4_76ou2")
+rotate_axis = Vector3(1, 0, 0)
+
+[node name="Wheel3" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="5" unique_id=55580854]
+material_override = ExtResource("3_4c60f")
+script = ExtResource("4_76ou2")
+rotate_axis = Vector3(1, 0, 0)
+
+[node name="Wheel4" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="6" unique_id=1206413539]
+material_override = ExtResource("3_4c60f")
+script = ExtResource("4_76ou2")
+rotate_axis = Vector3(1, 0, 0)
+
+[node name="Handle1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="8" unique_id=519110222]
+material_override = ExtResource("3_n83nq")
+
+[node name="Pillow" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="9" unique_id=1126548954]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9687597, 2.299, -0.816795)
+
+[node name="Pillow1" parent="wagon/WagonAll" parent_id_path=PackedInt32Array(751976450, 1723856635) index="10" unique_id=1816031547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6649122, 2.278, -0.48775333)
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2" unique_id=7713797]
+deterministic = false
+tree_root = SubResource("AnimationNodeBlendTree_qcr16")
+anim_player = NodePath("../AnimationPlayer")
+parameters/speed_blend/blend_position = 0.0
+parameters/hop_trigger/active = false
+parameters/hop_trigger/internal_active = false
+parameters/hop_trigger/request = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3" unique_id=101124278]
+libraries/ = SubResource("AnimationLibrary_76ou2")
+
+[editable path="wagon"]
