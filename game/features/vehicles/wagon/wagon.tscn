@@ -281,6 +281,7 @@ _data = {
 [node name="Vehicle Visual" unique_id=1261609396 node_paths=PackedStringArray("animation_tree", "character_root", "rotating_wheels") instance=ExtResource("1_1e1jv")]
 animation_tree = NodePath("AnimationTree")
 character_root = NodePath("CharacterRoot")
+wheel_angle_multiplier = -12.0
 rotating_wheels = [NodePath("wagon/WagonAll/Wheel1"), NodePath("wagon/WagonAll/Wheel3")]
 
 [node name="CharacterRoot" parent="." index="0" unique_id=1222562302]
