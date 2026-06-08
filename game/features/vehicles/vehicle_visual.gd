@@ -14,11 +14,6 @@ class_name VehicleVisual extends Node3D
 @export var mesh_yaw_speed: float = 20
 @export var mesh_roll_speed: float = 20
 
-
-## [method set_speed_based_yaw] uses this value to divide speed into a [0, 1] range, 
-## which is then passed to [method set_target_yaw_rot] to drive mesh yaw rotation.[br]
-## This value defines the speed the vehicle needs to achieve in order to be able to 
-## rotate and steer with max values
 @export var max_speed_yaw := 20
 
 @export var rotating_wheels: Array[Node3D]
@@ -44,6 +39,10 @@ func _process(delta: float) -> void:
 		wheel.rotation.y = rotate_toward(wheel.rotation.y, target_wheel_rot, tire_rot_speed * delta)
 
 
+## [method set_speed_based_yaw] uses this value to divide speed into a [0, 1] range, 
+## which is then passed to [method set_target_yaw_rot] to drive mesh yaw rotation.[br]
+## This value defines the speed the vehicle needs to achieve in order to be able to 
+## rotate and steer with max values
 func set_speed_based_yaw(intended_yaw: float, speed: float) -> void:
 	var yaw_multiplier := pow(MathUtils.clamp01(abs(speed) / max_speed_yaw), 0.5)
 	if speed < 0:

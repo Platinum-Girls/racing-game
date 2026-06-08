@@ -17,7 +17,7 @@ class_name CarBase extends CharacterBody3D
 
 @export_group("Steering")
 @export_custom(0, "suffix:deg") var max_tire_angle: float = 0.75
-@export_custom(0, "suffix:deg/s²") var  wheel_turn_acceleration: float = 9999
+@export_custom(0, "suffix:deg/s²") var  wheel_turn_acceleration: float = .01
 @export var air_steer_control := 0.35
 
 @export_group("Engine")
@@ -123,7 +123,7 @@ func calculate_steer_direction(delta: float, multiplier: float  = 1, turn_angle:
 		
 	var target_steer_direction := -steer_input * acceleration_sign * deg_to_rad(max_tire_angle) * multiplier
 	wheel_turn_speed = move_toward(wheel_turn_speed, deg_to_rad(turn_angle), deg_to_rad(wheel_turn_acceleration) * delta)
-	current_steer_direction = move_toward(current_steer_direction, target_steer_direction, wheel_turn_speed * delta)
+	current_steer_direction = move_toward(current_steer_direction, target_steer_direction, wheel_turn_speed)
 
 const VELO_Z_TURN_WEIGHT: float = 1#weighting to velocity so turn rate is proportional to velocity
 func perform_steering() -> void:
