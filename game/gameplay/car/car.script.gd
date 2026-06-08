@@ -17,6 +17,7 @@ class_name CarBase extends CharacterBody3D
 @export_custom(0, "suffix:deg/10/s") var max_steering_speed := 10
 @export_custom(0, "suffix:deg/10/s²") var steer_acceleration := 0.4
 @export_custom(0, "suffix:deg/10/s²") var steer_deceleration := 0.4
+@export var air_steer_control := 0.35
 
 @export_group("Engine")
 @export_custom(0, "suffix:m/s²") var engine_power: float = 6
@@ -129,13 +130,14 @@ func calculate_steer_direction() -> void:
 		current_steer_direction = lerp(current_steer_direction, 0.0, steer_deceleration)
 	
 
-func perform_steering() -> void:
-	if floor_cast.is_colliding():
-		var new_basis = velocity.rotated(basis.y, current_steer_direction).normalized()
-		
-		rotation.y += current_steer_direction
-		
-		velocity = velocity.length() * new_basis
+func perform_steering(multiplier: float = 1.0) -> void:
+	var steer = current_steer_direction * multiplier
+
+	var new_basis = velocity.rotated(basis.y, steer).normalized()
+	
+	rotation.y += steer
+	
+	velocity = velocity.length() * new_basis
 
 func align_with_ground() -> void:
 	# If either wheel is in the air, align to slope.
@@ -252,7 +254,10 @@ var air_counter = 0
 func _on_air_physics_processing(delta: float) -> void:
 	visual.set_speed_blend(0)
 	
-	current_steer_direction = 0
+	calculate_steer_direction()
+	perform_steering(air_steer_control)
+	
+	
 	up_direction = Vector3.UP
 	air_counter += delta
 	

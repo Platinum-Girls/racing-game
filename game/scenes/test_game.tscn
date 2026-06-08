@@ -32,7 +32,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -127.248566, 6.4449778, 153.3
 floor_max_angle = 1.0471976
 input_provider = NodePath("PlayerInputProvider")
 jump_speed = 20.0
-steer_wheel_angle_multiplier = 1.5
 engine_power = 15.0
 braking = -14.0
 friction = 4.0
@@ -80,10 +79,10 @@ shadow_enabled = true
 
 [node name="road2" parent="." unique_id=1383570268 instance=ExtResource("5_7xj4p")]
 
-[node name="Ground" parent="road2" index="2" unique_id=635310388]
+[node name="Ground" parent="road2" index="2" unique_id=1095934754]
 material_override = ExtResource("6_7xj4p")
 
-[node name="RoadCollision" parent="road2" index="3" unique_id=1742911346]
+[node name="RoadCollision" parent="road2" index="3" unique_id=2026999018]
 visibility_range_begin = 10000.0
 visibility_range_end = 0.1
 

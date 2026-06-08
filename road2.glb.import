@@ -45,6 +45,10 @@ _subresources={
 }
 },
 "nodes": {
+"PATH:Ground": {
+"generate/physics": true,
+"physics/layer": 16
+},
 "PATH:RoadCollision": {
 "generate/physics": true,
 "physics/layer": 16
