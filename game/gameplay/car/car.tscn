@@ -53,13 +53,14 @@ rear_ray = NodePath("RearRay")
 gravity = -40.0
 jump_speed = 8.0
 wheel_base = 1.5
-max_steering_speed = 15
+max_steering_speed = 13
 steer_acceleration = 0.28
 steer_deceleration = 0.35
 engine_power = 6.5
 friction = 6.0
-base_drifting_turn_speed = 5.5
-inward_drifting_turn_speed = 7.0
+outward_centrifugal_force = 21
+base_drifting_turn_speed = 6.0
+inward_drifting_turn_speed = 8.0
 outward_drifting_turn_speed = 4.0
 
 [node name="CameraContainer" type="Node3D" parent="." unique_id=1553171150]

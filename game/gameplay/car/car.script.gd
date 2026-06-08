@@ -226,7 +226,7 @@ func _on_drifting_physics_processing(delta: float) -> void:
 func _on_drifting_processing(delta: float) -> void:
 	drifting_visual_feedback(delta)
 	
-	camera_container.rotation.y = lerp_angle(camera_container.rotation.y, drifting_direction*deg_to_rad(-5), delta * 4)
+	camera_container.rotation.y = lerp_angle(camera_container.rotation.y, drifting_direction*deg_to_rad(5), delta * 4)
 
 
 #endregion
