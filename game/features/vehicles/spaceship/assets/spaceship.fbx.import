@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://btdrv2xukf1q3"
-path="res://.godot/imported/spaceship.fbx-ac014af76e8628a86d7a7226b63bbf53.scn"
+path="res://.godot/imported/spaceship.fbx-972864bec3a7a6b735f5f18f4e1558eb.scn"
 
 [deps]
 
-source_file="res://game/features/cars/spaceship/assets/spaceship.fbx"
-dest_files=["res://.godot/imported/spaceship.fbx-ac014af76e8628a86d7a7226b63bbf53.scn"]
+source_file="res://game/features/vehicles/spaceship/assets/spaceship.fbx"
+dest_files=["res://.godot/imported/spaceship.fbx-972864bec3a7a6b735f5f18f4e1558eb.scn"]
 
 [params]
 
@@ -46,27 +46,27 @@ _subresources={
 },
 "SpaceshipBase": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/cars/spaceship/assets/SpaceshipBase.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/SpaceshipBase.tres",
 "use_external/path": "uid://bbpsdga661xp7"
 },
 "SpaceshipGreen": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/cars/spaceship/assets/SpaceshipGreen.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/SpaceshipGreen.tres",
 "use_external/path": "uid://c3jgbycqcd8jc"
 },
 "SpaceshipLight": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/cars/spaceship/assets/SpaceshipLight.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/SpaceshipLight.tres",
 "use_external/path": "uid://b2rv6uhe82xuo"
 },
 "ThinnerOutline": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/cars/spaceship/assets/ThinnerOutline.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/ThinnerOutline.tres",
 "use_external/path": "uid://dxxkulodbrm3t"
 },
 "VehiclesOutline": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/cars/spaceship/assets/VehiclesOutline.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/VehiclesOutline.tres",
 "use_external/path": "uid://byy7674jmqipe"
 }
 },

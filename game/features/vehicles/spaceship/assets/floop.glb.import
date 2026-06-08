@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://3jqvoohqathe"
-path="res://.godot/imported/floop.glb-ca8caf00c046554fd5bc344ebae5a87b.scn"
+path="res://.godot/imported/floop.glb-f72399ad92c90e078cc068cf16e41ed8.scn"
 
 [deps]
 
-source_file="res://game/features/cars/spaceship/assets/floop.glb"
-dest_files=["res://.godot/imported/floop.glb-ca8caf00c046554fd5bc344ebae5a87b.scn"]
+source_file="res://game/features/vehicles/spaceship/assets/floop.glb"
+dest_files=["res://.godot/imported/floop.glb-f72399ad92c90e078cc068cf16e41ed8.scn"]
 
 [params]
 
@@ -45,7 +45,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://game/features/cars/spaceship/assets/floop.res",
+"save_to_file/fallback_path": "res://game/features/vehicles/spaceship/assets/floop.res",
 "save_to_file/path": "uid://cbu8rtie43t5l"
 }
 }
