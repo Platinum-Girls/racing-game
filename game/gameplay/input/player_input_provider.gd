@@ -12,6 +12,8 @@ func is_braking() -> bool:
 func get_acceleration_axis() -> float:
 	return Input.get_axis(&"accelerate", &"brake")
 
+func get_acceleration_axis_sign() -> float:
+	return sign(Input.get_axis(&"accelerate", &"brake"))
 
 func get_steering_axis() -> float:
 	return Input.get_axis(&"steer_right", &"steer_left")

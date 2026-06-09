@@ -35,7 +35,7 @@ blend_point_2/node = SubResource("AnimationNodeAnimation_qcr16")
 blend_point_2/pos = 0.0
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_n12dl"]
-graph_offset = Vector2(-667, 70)
+graph_offset = Vector2(-323.0349, 64.77659)
 nodes/output/position = Vector2(525, 150)
 nodes/speed_blend/node = SubResource("AnimationNodeBlendSpace1D_8ub0k")
 nodes/speed_blend/position = Vector2(-200, 150)
@@ -152,11 +152,15 @@ _data = {
 &"reversing": SubResource("Animation_txm4o")
 }
 
-[node name="Spaceship" unique_id=583529944 instance=ExtResource("1_sguv0")]
+[node name="Spaceship" unique_id=583529944 node_paths=PackedStringArray("pivot", "animation_tree", "character_root") instance=ExtResource("1_sguv0")]
 script = ExtResource("2_5kh28")
-ufo_rotate_multiplier = 20
-speed_smoothing = 8.0
-mesh_roll_multiplier = 16.0
+pivot = NodePath("Pivot")
+ufo_rotate_multiplier = 20.0
+base_rotate_speed_multiplier = 999.0
+rotate_speed_change_dir_multiplier = 10.0
+animation_tree = NodePath("AnimationTree")
+character_root = NodePath("CharacterRoot")
+mesh_roll_multiplier = 500.0
 
 [node name="Pivot" type="Node3D" parent="." index="0" unique_id=1252213576]
 script = ExtResource("2_8ae60")

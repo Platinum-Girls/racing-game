@@ -11,6 +11,9 @@ func is_braking() -> bool
 func get_acceleration_axis() -> float
 
 @abstract
+func get_acceleration_axis_sign() -> float
+
+@abstract
 func get_steering_axis() -> float
 
 @abstract

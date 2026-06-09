@@ -46,27 +46,27 @@ _subresources={
 },
 "SpaceshipBase": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/SpaceshipBase.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/materials/SpaceshipBase.tres",
 "use_external/path": "uid://bbpsdga661xp7"
 },
 "SpaceshipGreen": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/SpaceshipGreen.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/materials/SpaceshipGreen.tres",
 "use_external/path": "uid://c3jgbycqcd8jc"
 },
 "SpaceshipLight": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/SpaceshipLight.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/materials/SpaceshipLight.tres",
 "use_external/path": "uid://b2rv6uhe82xuo"
 },
 "ThinnerOutline": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/ThinnerOutline.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/materials/ThinnerOutline.tres",
 "use_external/path": "uid://dxxkulodbrm3t"
 },
 "VehiclesOutline": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://game/features/vehicles/spaceship/assets/VehiclesOutline.tres",
+"use_external/fallback_path": "res://game/features/vehicles/spaceship/materials/VehiclesOutline.tres",
 "use_external/path": "uid://byy7674jmqipe"
 }
 },
