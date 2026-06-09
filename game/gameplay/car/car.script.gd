@@ -11,13 +11,12 @@ class_name CarBase extends CharacterBody3D
 @export_group("Physical Properties")
 @export_custom(0, "suffix:m/s") var gravity: float = -20
 @export_custom(0, "suffix:m/s") var jump_speed: float = 20
-@export_custom(0, "suffix:m") var wheel_base: float = 0.6
 @export var align_with_ground_lerp_weight: float          = 0.1
 
 
 @export_group("Steering")
 @export_custom(0, "suffix:deg") var max_tire_angle: float = 0.75
-@export_custom(0, "suffix:deg/s²") var  wheel_turn_acceleration: float = .001
+@export_custom(0, "suffix:deg/s²") var  wheel_turn_acceleration: float = .1
 @export var air_steer_control := 0.35
 
 @export_group("Engine")
@@ -118,19 +117,26 @@ func apply_friction(delta: float) -> void:
 		velocity = velocity.normalized() * min(velocity.length(), max_speed_reverse)
 
 
-func calculate_steer_direction(delta: float, multiplier: float  = 1, turn_angle: float = max_tire_angle) -> void:
+func calculate_steer_direction(delta: float, multiplier: float  = 1, max_turn_angle: float = max_tire_angle) -> void:
 	#If player is changing between backing up/going forward begin changing direction of turn. if 0 use current speed sign to simulate carrying inertia
 	var acceleration_sign: float = sign(input_provider.get_acceleration_axis_sign())
 	if acceleration_sign == 0:
 		acceleration_sign = sign(velocity.slide(up_direction).dot(basis.z))
+	var target_steer_direction := -steer_input * acceleration_sign * deg_to_rad(max_turn_angle) * multiplier
+	
+	if abs(target_steer_direction - current_steer_direction) > 0:#turn_speed deaccumulator TODO: THIS IS ATROCIOUS.
+			wheel_turn_speed = move_toward(wheel_turn_speed, deg_to_rad(max_turn_angle), deg_to_rad(wheel_turn_acceleration) * delta)
+	else:
+		wheel_turn_speed = move_toward(wheel_turn_speed, 0, deg_to_rad(wheel_turn_acceleration) * delta)
 		
-	var target_steer_direction := -steer_input * acceleration_sign * deg_to_rad(max_tire_angle) * multiplier
-	wheel_turn_speed = move_toward(wheel_turn_speed, deg_to_rad(turn_angle), deg_to_rad(wheel_turn_acceleration) * delta)
 	current_steer_direction = move_toward(current_steer_direction, target_steer_direction, wheel_turn_speed)
 
 func perform_steering() -> void:
 	var new_heading: Vector3 = velocity.rotated(basis.y, current_steer_direction).normalized()
-	basis = basis.slerp(basis.rotated(up_direction, current_steer_direction), MathUtils.clamp01(velocity.slide(up_direction).length() * VELO_Z_TURN_WEIGHT)).orthonormalized()
+	basis = basis.slerp(
+			basis.rotated(up_direction, current_steer_direction), 
+			MathUtils.clamp01(velocity.slide(up_direction).length() * VELO_Z_TURN_WEIGHT)
+		).orthonormalized()
 
 	velocity = velocity.length() * new_heading
 
