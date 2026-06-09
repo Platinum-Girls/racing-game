@@ -13,7 +13,7 @@
 resource_name = "VehicleSwitcher"
 script/source = "extends Node
 
-@onready var car: CarBase = $\"..\"
+@export var car: CarBase
 @export var vehicles: Array[PackedScene]
 
 var current: int = 0
@@ -70,8 +70,9 @@ max_speed_reverse = 8.0
 script = ExtResource("2_4ff6f")
 metadata/_custom_type_script = "uid://dqk8d5tvee45m"
 
-[node name="Debug Vehicle Switcher" type="Node" parent="Car" unique_id=224869783]
+[node name="Debug Vehicle Switcher" type="Node" parent="Car" unique_id=224869783 node_paths=PackedStringArray("car")]
 script = SubResource("GDScript_7xj4p")
+car = NodePath("..")
 vehicles = Array[PackedScene]([ExtResource("3_tp64q"), ExtResource("3_no4cj")])
 
 [node name="Node3D" type="Node3D" parent="." unique_id=419274260 node_paths=PackedStringArray("target", "cameras")]

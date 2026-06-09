@@ -21,11 +21,6 @@ script = ExtResource("6_oaolh")
 expression = "!drifting"
 metadata/_custom_type_script = "uid://le5w1cm0ul8p"
 
-[sub_resource type="Resource" id="Resource_epelm"]
-script = ExtResource("6_oaolh")
-expression = "velocity < 10 and false"
-metadata/_custom_type_script = "uid://le5w1cm0ul8p"
-
 [sub_resource type="Resource" id="Resource_2pmk8"]
 script = ExtResource("6_oaolh")
 expression = "grounded == false"
@@ -52,7 +47,7 @@ front_ray = NodePath("FrontRay")
 rear_ray = NodePath("RearRay")
 gravity = -40.0
 jump_speed = 8.0
-wheel_base = 1.5
+max_tire_angle = 0.5
 engine_power = 6.5
 friction = 6.0
 outward_centrifugal_force = 21
@@ -102,11 +97,6 @@ script = ExtResource("5_v4mqv")
 to = NodePath("../../Normal")
 guard = SubResource("Resource_q3634")
 delay_in_seconds = "0.0"
-
-[node name="ToNormal2" type="Node" parent="Car States/Root/Grounded/Drifting" unique_id=1200852206]
-script = ExtResource("5_v4mqv")
-guard = SubResource("Resource_epelm")
-delay_in_seconds = "0.5"
 
 [node name="ToAir" type="Node" parent="Car States/Root/Grounded" unique_id=1632594319]
 script = ExtResource("5_v4mqv")
@@ -181,6 +171,5 @@ initial_node_to_watch = NodePath("../Car States")
 [connection signal="state_exited" from="Car States/Root/Grounded/Drifting" to="." method="_on_drifting_state_exited"]
 [connection signal="state_physics_processing" from="Car States/Root/Grounded/Drifting" to="." method="_on_drifting_physics_processing"]
 [connection signal="state_processing" from="Car States/Root/Grounded/Drifting" to="." method="_on_drifting_processing"]
-[connection signal="state_exited" from="Car States/Root/Air" to="." method="_on_air_exited"]
 [connection signal="state_physics_processing" from="Car States/Root/Air" to="." method="_on_air_physics_processing"]
 [connection signal="state_processing" from="Car States/Root/Air" to="." method="_on_air_processing"]
