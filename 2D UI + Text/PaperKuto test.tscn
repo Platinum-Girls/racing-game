@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://clwl1a8nouefo"]
+
+[ext_resource type="FontFile" uid="uid://d020yipxe1po7" path="res://2D UI + Text/PaperKuto-Regular.ttf" id="1_ms2wy"]
+
+[node name="PaperKutoTest" type="Node2D" unique_id=320505526]
+
+[node name="Button" type="Button" parent="." unique_id=557879404]
+offset_left = 387.0
+offset_top = 7.0
+offset_right = 893.0
+offset_bottom = 193.0
+theme_override_fonts/font = ExtResource("1_ms2wy")
+text = "THIS IS A TEST
+FONT IS WORKING NOW YIPPEE (MAYBE, I HOPE SO)"
